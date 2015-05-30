@@ -12,7 +12,7 @@ I am striving to let Jesus Christ shape the values I'm working by. Therefore
 
 Some solutions turn out to be less than perfect in the long run. Therefore
 
-* I tend to offer simple solutions, covering 70 % of the features with 10 % of the effort, but do work predictably and reliably.
+* I tend to offer simple solutions, that cover 70 % of the features with 10 % of the effort, but do work predictably and reliably.
 * I make sure you'll stay independent of vendors, which often leads to open source solutions.
 * I care about the effort to replace the system 5 or 15 years from now.
 
