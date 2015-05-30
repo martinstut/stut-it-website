@@ -1,0 +1,20 @@
+<ul class="navi">
+{% for navpage in site.data.navimain %}
+  <li>
+    <a href="{{ navpage.url | prepend:"." }}" {% if navpage.url == page.url %} class="active" {% endif %}>
+      {{ navpage.menuname }}
+    </a>
+	{% if navpage.subpages %}
+		<ul class="subnavi">
+		{% for subpage in navpage.subpages %}
+		  <li>
+			<a href="{{ subpage.url | prepend:"." }}" {% if subpage.url == page.url %} class="active" {% endif %}>
+			  {{ subpage.menuname }}
+			</a>
+		  </li>
+		{% endfor %}
+		</ul>
+	{% endif %}
+  </li>
+{% endfor %}
+</ul>

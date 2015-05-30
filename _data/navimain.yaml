@@ -1,0 +1,17 @@
+- url: /index.html
+  menuname: Home
+
+- url: /values.html
+  menuname: Values
+  
+- url: /services.html
+  menuname: Services
+  
+- url: /experience.html
+  menuname: Experience
+  
+- url: /links.html
+  menuname: Links
+  
+- url: /contact.html
+  menuname: Contact
