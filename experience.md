@@ -85,12 +85,10 @@ for
 
 together with a professional designer (mostly [Henri Oetjen](http://www.designbuero-oetjen.de)) :
 
-* [Evangeliumsgemeinschaft Mittlerer Osten, Wiesbaden](http://www.emo-wiesbaden.de) (own static CMS)
 * [Psychologische Beratung Evelyn Heil](http://www.leben-hat-sinn.de) (own static CMS)
 * [Christlicher Hilfsbund im Orient](http://www.hilfsbund.de) (Joomla)
 * [Faszination Naturfotografie Friedrich Haubner](http://www.naturfoto-haubner.de) (own static CMS)
 * [Diakonissen-Mutterhaus Altvandsburg, Lemförde](http://www.altvandsburg.de) (GetSimple)
-* [Freeborn International](http://www.freeborn-germany.org) (GetSimple)
 
 without external designer:
 
