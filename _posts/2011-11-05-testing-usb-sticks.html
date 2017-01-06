@@ -1,0 +1,26 @@
+---
+layout: post
+title: Testing USB Sticks
+date: 2011-11-05 11:07:11.000000000 +01:00
+type: post
+published: true
+status: publish
+categories:
+- howto
+- test
+tags:
+- test
+- usb
+- windows
+meta:
+  _edit_last: '8168498'
+  _wpas_done_twitter: '1'
+author:
+  login: martinstut
+  email: martin.stut@gmx.de
+  display_name: Martin Stut
+  first_name: ''
+  last_name: ''
+---
+<p>From a local IT shop (<a title="LWM Computer, Marburg" href="http://www.lwm.de" target="_blank">LWM Marburg</a>) I got some old USB sticks. Before using them for important data, I wanted to make sure, they really store the data written to them. So I set out and looked for testing software, preferably running on Linux. It's surprisingly hard to find.</p>
+<p>The classic piece of testing software seems to be <a title="h2testw" href="http://www.heise.de/software/download/h2testw/50539" target="_blank">h2testw</a>, for Windows, created by the German publishing house Heise. It expects a formatted stick. Testing is done by writing as many huge files (1 GB each) as will fit and then read them to check whether they contain the data that was written. This won't test every corner, but it will detect fakes (having less capacity than advertised) and it will run without administrator rights.</p>

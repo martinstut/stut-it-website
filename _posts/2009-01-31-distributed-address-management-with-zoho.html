@@ -1,0 +1,37 @@
+---
+layout: post
+title: Distributed Address Management with Zoho
+date: 2009-01-31 16:44:00.000000000 +01:00
+type: post
+published: true
+status: publish
+categories:
+- test
+tags:
+- address
+- distributed
+- web
+- zoho
+meta:
+  blogger_blog: stut-tech.blogspot.com
+  blogger_author: Martin Stut
+  blogger_696be068bb61f647b27027922882b6af_permalink: '38550813750924071'
+  _edit_last: '8168498'
+  _wpas_skip_twitter: '1'
+  _oembed_98ce690d59412f8abf866dd6e4db0fd0: "{{unknown}}"
+author:
+  login: martinstut
+  email: martin.stut@gmx.de
+  display_name: Martin Stut
+  first_name: ''
+  last_name: ''
+---
+<p>A friend of ours is a teacher and counselor and needs to manage a collection of about 1000 addresses. He sends an email newsletter to about 500 of them every month and a paper mailing to about 200 of them twice a year. He asked my wife's <a href="http://www.marion-stut.de/">office service</a> to help him, so he can focus on spiritual tasks and doesn't need to spend much time for dry administration.<br />
+One option is to run a standard fat-client address management software (we're considering <a href="http://www.optigem.com/">Optigem</a>). But our friend lives about 15 km (10 miles) away, so driving there just to enter a single new address is not efficient. File server style access to an MS-Access database over an ADSL line (192 kbps upstream) or maintaining a Windows terminal server just for this purpose isn't either, so we'd have to copy the database to a USB key and physically exchange that in church on Sunday. This would imply, that between copies only one side is allowed to modify data. This would be acceptable, though not ideal. So I'm looking for a more elegant solution: a hosted address database on the web.</p>
+<h3>Looking for a Web Service: Zoho</h3>
+<p>There are some web services around, but the only free one I found to be able to manage categories was Zoho. They have a full CRM suite, but it was too big for this purpose. What thrilled me was Zoho personal (http://personal.zoho.com) - a complete work area with word processing, spreadsheet, mail etc. on the web. It does include a contact management component, separately accessible as <a href="http://contacts.zoho.com">http://contacts.zoho.com</a>, with categories and permission groups. When editing a contact, you can add it to one or more categories and groups. Groups are for sharing data, so you could permit other Zoho users to see certain things in your workspace.<br />
+Sending an email message to an entire category is easy - but there is no Bcc option when composing messages. Bcc is a must, because you don't want your email address broadcast to many hundreds of other recipients of the newsletter.<br />
+So you need to export the contact data and compose the message in a conventional e-mail program like Thunderbird. This kind of export is possible for any single category. Formats offered include CSV, Outlook CSV and LDIF. LDIF is great for importing into Thunderbird as a new address book. To mail a newsletter in Thunderbird, you just need to enable the contact sidebar, select all addresses of the newly imported address book, right-click on the selection and "add to Bcc".<br />
+With these possibilities, Zoho Personal is an acceptable choice as a contact management tool.</p>
+<p>The only glitch I found was in localization - my wife really prefers a German language user interface.<br />
+If you want the Zoho user interface in your language, as opposed to "English only", you need to login through personal.zoho.com, not through contacts.zoho.com. In personal.zoho.com, you can set a user interface language. But during the tests I could no longer get to the contacts application within the personal site. It just showed the form "please sign up". I sent a feedback to Zoho - and I'm curious whether there will be a response.</p>

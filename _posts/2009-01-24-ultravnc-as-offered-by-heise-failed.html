@@ -1,0 +1,34 @@
+---
+layout: post
+title: UltraVNC as offered by Heise (failed)
+date: 2009-01-24 16:38:00.000000000 +01:00
+type: post
+published: true
+status: publish
+categories:
+- test
+tags:
+- heise
+- remote
+- support
+- vnc
+meta:
+  blogger_blog: stut-tech.blogspot.com
+  blogger_author: Martin Stut
+  blogger_696be068bb61f647b27027922882b6af_permalink: '8158620416841181665'
+  _wpas_skip_twitter: '1'
+  _edit_last: '8168498'
+  _oembed_ddb0145a40382a709dfff2cd25606594: "{{unknown}}"
+author:
+  login: martinstut
+  email: martin.stut@gmx.de
+  display_name: Martin Stut
+  first_name: ''
+  last_name: ''
+---
+<p>The German IT publishing house <a href="http://www.heise.de/" target="_blank">Heise</a> is offering a service to create an UltraVNC client that's customized to connect to <span style="font-style:italic;">your</span> server: <a href="http://www.heise.de/netze/tools/fernwartung" target="_blank">http://www.heise.de/netze/tools/fernwartung</a> (German language only). Because I often need to help other computer users by remote access, the prospect of distributing a single exe file, which is able to establish a connection without installation, was appealing. So I decided to give the service a try.</p>
+<p>I visited the URL, entered my home dyndns address and phone number, clicked on the download button and got the customized program as ctsupport.exe (c't ist the name of a German computer magazine, published by Heise). I transferred it to a virtual Windows 2000 machine. Of course I had setup my home router to forward incoming TCP connections on port 5500 to my client PC.</p>
+<p>On the test machine, simulating someone in want of help, I double clicked the ctsupport.exe file, selected the single available connection (my server) and got connected - but only TCP-wise. The listener on my linux box did write about the connection, but did neither open a window nor write an error message. Apparently an UltraVNC server does not cooperate with any VNC-style viewer.<br />
+A glance at the Heise documentation says: "on Linux helper PCs use vncviewer". I had tightvncviewer, so that may have caused the problem. I noticed, that I already had vncviewer installed, so I simply tried <code>vncviewer -listen</code> on the helper PC, but the problem persisted: TCP connection established, but no windows opening and no error message on the client (helper).</p>
+<p>At that point I decided to give up on the Heise tool and stick with "classic" TightVNC.</p>
+<div class="blogger-post-footer"><img src="{{ site.baseurl }}/assets/" alt="" width="1" height="1" /></div>

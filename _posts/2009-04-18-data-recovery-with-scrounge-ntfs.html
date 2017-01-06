@@ -1,0 +1,46 @@
+---
+layout: post
+title: Data Recovery with Scrounge NTFS
+date: 2009-04-18 16:56:00.000000000 +02:00
+type: post
+published: true
+status: publish
+categories:
+- howto
+tags:
+- linux
+- mft
+- ntfs
+- recovery
+- windows
+meta:
+  blogger_blog: stut-tech.blogspot.com
+  blogger_author: Martin Stut
+  blogger_696be068bb61f647b27027922882b6af_permalink: '4122181338827398461'
+  _edit_last: '8168498'
+  _wpas_skip_twitter: '1'
+author:
+  login: martinstut
+  email: martin.stut@gmx.de
+  display_name: Martin Stut
+  first_name: ''
+  last_name: ''
+---
+<p>A friend asked me to try to recover data from an external 160 GB hard disk. It refused to show its contents on Windows XP, where it used to be used. In an earlier similar situation I had successfully used scrounge-ntfs. Scrounge NTFS is available as an out-of-the-box package for Debian Linux, which I run on my desktop computer at home. So I gave it a try in this case too. I connected the disk to a USB port of my computer, where it got the device ID /dev/sdb.</p>
+<p>To use scrounge-ntfs, one needs some pieces of information (items copied from the author's website):</p>
+<ul>
+<li><strong>Start Sector:</strong> This is where the partition starts on your hard disk.</li>
+<li><strong>End Sector:</strong> Where your partition ends on the entire hard disk.</li>
+<li><strong>Cluster Size:</strong> This is the size of one 'block' of data on a partition</li>
+<li><strong>MFT Offset:</strong> The position of the NTFS <strong>M</strong>aster <strong>F</strong>ile <strong>T</strong>able.</li>
+</ul>
+<p>I didn't know this data, but I let scrounge-ntfs guess it: <span style="font-family:courier new;">scrounge-ntfs -l /dev/sdb</span><br />
+I got<br />
+<span style="font-family:courier new;"> Start Sector End Sector Cluster Size MFT Offset </span><br />
+<span style="font-family:courier new;"> 63 312579729 8 6291456 </span><br />
+So I changed into the directory where I wanted the recovered data to end up and entered<br />
+<span style="font-family:courier new;">scrounge-ntfs -m 6291456 -c 8 /dev/sdb 63 312579729</span><br />
+Unfortunately, scrounge-ntfs just complained about an invalid mft-record and stopped.<br />
+There is the option of running scrounge-ntfs without telling it where the MFT is. But if run so, it places all recovered files into one single directory. Manually sorting more than 20,000 files is not particularly funny, so I wanted to aim for a better result.</p>
+<p>According to Stef Walter, the author of scrounge-ntfs, sector 6291456 is a customary place for the start of the MFT. Given the error message, I assumed that the usual place happened to be on a damaged sector. After a little thinking, I dared to use a trick: let it look for the MFT one sector <span style="font-weight:bold;">after</span> the original one, i.e. <span style="font-family:courier new;">scrounge-ntfs -m 629145<span style="font-weight:bold;">7</span> -c 8 /dev/sdb 63 312579729</span><br />
+I didn't really expect this to work, but it did. Although every message about a recovered file is preceded by <span style="font-family:courier new;">scrounge-ntfs: invalid mft record</span>, all files were recovered and by far most of them ended up in a meaningful subdirectory. So my friend is happy of having his data back again.</p>

@@ -1,0 +1,38 @@
+---
+layout: post
+title: Connecting a Canon Pixma ip4600 Printer to Debian Squeeze Linux
+date: 2009-10-16 18:12:00.000000000 +02:00
+type: post
+published: true
+status: publish
+categories:
+- howto
+tags:
+- canon
+- ip4600
+- linux
+- pixma
+meta:
+  blogger_blog: stut-tech.blogspot.com
+  blogger_author: Martin Stut
+  blogger_696be068bb61f647b27027922882b6af_permalink: '790942404793320650'
+  _edit_last: '8168498'
+  _wpas_skip_twitter: '1'
+  sharing_disabled: '1'
+  switch_like_status: '1'
+author:
+  login: martinstut
+  email: martin.stut@gmx.de
+  display_name: Martin Stut
+  first_name: ''
+  last_name: ''
+---
+<p>I bought that particular printer for its ability to directly print on CDs. The printer documentation says, that this needs the special driver (provided only for Windows), but still it should be able to print on standard paper from Linux.</p>
+<p><span style="font-size:130%;"><span style="font-weight:bold;">Try 1: Plug &amp; Play Connectivity</span></span></p>
+<p>The Debian based Linux distributions nowadays do plug and play surprisingly well. So I gave it a try: connect the printer to a USB port, turn it on and see what happens:<br />
+A message box appeared "the ip4600 printer has been added with a text only driver". It offered "find driver", I accepted that offer, got asked for my password and voilà, the printer configuration contained the ip4600_series.</p>
+<p><span style="font-size:130%;"><span style="font-weight:bold;">Try 2: Manually Adding a Driver to CUPS</span></span></p>
+<p>I connected my web browser to the local CUPS (https://localhost:631). The printer was there, but still with "generic text-only". Unfortunately, no search option turned out any results. So I looked into the aptitude package manager to install additional drivers.<br />
+<span style="font-weight:bold;">I installed the package cups-driver-gutenprint</span>, which pulled in ghostscript-cups.<br />
+The I chose the "add printer" dialog. Maker Canon, the model Pixma ip4600 (gutenprint) was an offered choice which I chose. This created a new queue <span style="font-family:courier new;">Canon_iP4600_series</span>. I deleted the first automatic queue <span style="font-family:courier new;">iP4600_series</span>.</p>
+<p>The first test print was a 6 page HTML file from Iceweasel (Firefox) which worked immediately.</p>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  {% include head.html %}
+  <body>
+	<div id="menulink"><a href="#lowernavi">Menü</a></div>
+    {% include header.html %}
+	<div id="navi">
+		{% include navi.html %}
+	</div>
+    <div id="inhalt">
+      {{ content }}
+    </div>
+	<div id="lowernavi">
+		<div id="navirepeat">
+			{% include navi.html %}
+		</div>
+		{% include lowernavi.html %}
+	</div>
+    {% include footer.html %}
+  </body>
+</html>

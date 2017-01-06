@@ -1,0 +1,195 @@
+---
+layout: post
+title: 'Magpie RSS: Include an RSS Feed on an HTML webpage'
+date: 2009-01-24 18:18:00.000000000 +01:00
+type: post
+published: true
+status: publish
+categories:
+- test
+tags:
+- blog
+- feedreader
+- magpie
+- php
+- rss
+- web
+meta:
+  blogger_blog: stut-tech.blogspot.com
+  blogger_author: Martin Stut
+  blogger_696be068bb61f647b27027922882b6af_permalink: '114228248715496978'
+  _edit_last: '8168498'
+  _wpas_skip_twitter: '1'
+  _oembed_61d7e45af8ca71bb61a8ddc55214a1d1: "{{unknown}}"
+  _oembed_02bf3ed3bce0e02107ede38affada8a7: "{{unknown}}"
+author:
+  login: martinstut
+  email: martin.stut@gmx.de
+  display_name: Martin Stut
+  first_name: ''
+  last_name: ''
+---
+<h3>Rationale for a PHP Feedreader</h3>
+<p>Quite often, organizational websites are written in static HTML, which is fine for the purpose, but want to run some kind of news system to publish current events without having to edit the core pages. If a CMS is available, one can use that for the purpose. But if they do not want to run a CMS - there may be good reasons, e.g. security - there is the option of using a blog service like blogger.com as a backend. But what to use as a frontend, visible to website visitors?<br />
+Telling people "please get a feed reader and subscribe to our blog" is creating an inadequate obstacle - many visitors of the target audience are barely capable of typing a URL into their browser, let alone manage bookmarks. So the feed needs to display automatically with the webpage. Including a JavaScript feed reader would mean to require a client side script to pull data from a third-party server (blogger.com), which is for good reasons blocked by default due to the "same origin policy".<br />
+So the feed needs to be included by a server-side script. Nowadays PHP is available even with cheap shared hosting packages, so I could set out to create a PHP page blogfeed.php that pulls and displays the relevant items of the feed.</p>
+<h3>Magpie RSS</h3>
+<p>This task can't be unique, so I looked for a PHP script doing that. I found most references for Magpie rss (<a href="http://magpierss.sourceforge.net/">http://magpierss.sourceforge.net/</a>). This homepage also gives links to hints useful for RSS users and webmasters in general.<br />
+The magpie project does not offer a real manual, but it does provide <a href="http://magpierss.sourceforge.net/links.php">links to examples</a>.<br />
+The provided example only shows how to display a list of titles. My plan is to show the first three or so news items in full text and only headlines for the rest.<br />
+The author of <a href="http://www.hiash.com/blogger.php">http://www.hiash.com/blogger.php</a> (referred to on the Magpie links page) has exactly the same plans a I did: using blogger.com as a backend for another webpage.<br />
+That made me confident enough to try it. At first I did it on my home (intranet) web server:</p>
+<h3>My First Try with Magpie</h3>
+<p>I downloaded magpie in its most recent version 0.72 from the Sourceforge download page. There I discovered that the current version dates from 2005. I researched a bit for alternatives, but found only very few, very simple (probably too simple) scripts, e.g. <a href="http://lastrss.oslab.net/">LastRSS</a>. So I concluded, that Magpie's age may be a sign of matureness and robustness, rather than obsoleteness.<br />
+All magpie users recommend this directory structure, so I set it up too:</p>
+<pre>magpie/rss_cache.inc
+magpie/rss_fetch.inc
+magpie/rss_parse.inc
+magpie/rss_utils.inc
+magpie/extlib/Snoopy.class.inc</pre>
+<p>The untarred download contains a nice file htdocs/cookbook.html.</p>
+<p>For a first try, I created a little file http://www.home.stut.de/newsfeed.php (home intranet only) on the root directory of my home intranet web server (Apache with PHP5 on Debian Etch), copied almost literally from hiash.com:<br />
+<code>define('MAGPIE_DIR', 'magpie/');<br />
+require_once(MAGPIE_DIR.'rss_fetch.inc');<br />
+$rss = fetch_rss( 'http://stut-tech.blogspot.com/feeds/posts/default' );<br />
+//display latest blog content:<br />
+$item = $rss-&gt;items[0];<br />
+$content = $item['atom_content'];<br />
+echo "<br />
+Latest Blog Entry:<br />
+$content<br />
+\n";</code><br />
+It really does show my last blog post. But I want to know more about the inner workings, so I try to look at the complete array contents using the print_r function:</p>
+<pre>MagpieRSS Object([parser] =&gt; Resource id #9
+[current_item] =&gt; Array()
+[items] =&gt; Array([0] =&gt; Array(
+  [id] =&gt; tag:blogger.com,1999:blog-3769163305311983690.post-6898517931677696103
+  [published] =&gt; 2009-01-17T15:25:00.003+01:00
+  [updated] =&gt; 2009-01-17T16:07:54.525+01:00
+  [app] =&gt; Array([edited] =&gt; 2009-01-17T16:07:54.525+01:00)
+  [title] =&gt; jbrout Photo Manager[atom_content] =&gt; I'm no longer ...  (full length article cut for brevity)... you can really find the buried gems in your picture collection.
+  [link_related] =&gt; http://jbrout.free.fr/
+  [link_replies] =&gt; http://stut-tech.blogspot.com/feeds/6898517931677696103/comments/defaulthttp://stut-tech.blogspot.com/2009/01/jbrout-photo-manager.html#comment-form
+  [link_edit] =&gt; http://www.blogger.com/feeds/3769163305311983690/posts/default/6898517931677696103?v=2
+  [link_self] =&gt; http://stut-tech.blogspot.com/feeds/posts/default/6898517931677696103
+  [link] =&gt; http://stut-tech.blogspot.com/2009/01/jbrout-photo-manager.html
+  [author_name] =&gt; Martin Stut
+  [author_uri] =&gt; http://www.blogger.com/profile/09103658031822073197
+  [author_email] =&gt; noreply@blogger.com
+  [thr] =&gt; Array([total] =&gt; 0)
+)
+[1] =&gt; Array(
+  [id] =&gt; tag:blogger.com,1999:blog-3769163305311983690.post-1064215087336461038
+  [published] =&gt; 2009-01-14T19:51:00.004+01:00
+  [updated] =&gt; 2009-01-17T15:24:55.524+01:00
+  [app] =&gt; Array([edited] =&gt; 2009-01-17T15:24:55.524+01:00)
+  [title] =&gt; Copy Audio CDs
+  [atom_content] =&gt; (full length article omitted for brevity)
+  [link_replies] =&gt; http://stut-tech.blogspot.com/feeds/1064215087336461038/comments/default http://stut-tech.blogspot.com/2009/01/copy-audio-cds.html#comment-form
+  [link_edit] =&gt; http://www.blogger.com/feeds/3769163305311983690/posts/default/1064215087336461038?v=2
+  [link_self] =&gt; http://stut-tech.blogspot.com/feeds/posts/default/1064215087336461038
+  [link] =&gt; http://stut-tech.blogspot.com/2009/01/copy-audio-cds.html
+  [author_name] =&gt; Martin Stut
+  [author_uri] =&gt; http://www.blogger.com/profile/09103658031822073197
+  [author_email] =&gt; noreply@blogger.com
+  [thr] =&gt; Array([total] =&gt; 0)
+)
+)
+[channel] =&gt; Array(
+  [id] =&gt; tag:blogger.com,1999:blog-3769163305311983690
+  [updated] =&gt; 2009-01-18T07:13:25.599+01:00
+  [title] =&gt; Martin Stut's IT Experiments
+  [subtitle] =&gt; Almost every Saturday, I'm experimenting with some IT stuff, usually open source software on Debian Linux. I'm planning to document and share my findings here. Tests of software, tweaks needed to get something going, bringing a buried gem to the attention it might deserve.
+  [link_http://schemas.google.com/g/2005#feed] =&gt; http://stut-tech.blogspot.com/feeds/posts/default
+  [link_self] =&gt; http://stut-tech.blogspot.com/feeds/posts/default
+  [link] =&gt; http://stut-tech.blogspot.com/
+  [author_name] =&gt; Martin Stut
+  [author_uri] =&gt; http://www.blogger.com/profile/09103658031822073197
+  [author_email] =&gt; noreply@blogger.com
+  [generator] =&gt; Blogger
+  [opensearch] =&gt; Array([totalresults] =&gt; 2
+    [startindex] =&gt; 1
+    [itemsperpage] =&gt; 25)
+)
+[textinput] =&gt; Array()
+[image] =&gt; Array()
+[feed_type] =&gt; Atom
+[feed_version] =&gt;
+[encoding] =&gt; ISO-8859-1
+[_source_encoding] =&gt;
+[ERROR] =&gt;
+[WARNING] =&gt;
+[_CONTENT_CONSTRUCTS] =&gt; Array(
+  [0] =&gt; content
+  [1] =&gt; summary
+  [2] =&gt; info
+  [3] =&gt; title
+  [4] =&gt; tagline
+  [5] =&gt; copyright)
+[_KNOWN_ENCODINGS] =&gt; Array([0] =&gt; UTF-8; [1] =&gt; US-ASCII; [2] =&gt; ISO-8859-1)
+[stack] =&gt; Array()
+[inchannel] =&gt;
+[initem] =&gt;
+[incontent] =&gt;
+[intextinput] =&gt;
+[inimage] =&gt;
+[current_namespace] =&gt;
+[last_modified] =&gt; Sun, 18 Jan 2009 06:13:25 GMT
+[etag] =&gt; W/"A0UERHsycSp7ImA9WxVREkg."
+)</pre>
+<h3>Adding the newsfeed to an existing HTML-only website</h3>
+<p>I added a magpie folder (chmod 755) to the root directory of my website, and a blogfeed.php file to the root level of it.<br />
+I was able to call blogfeed.php in Firefox, but non-ASCII characters were broken. I solved this by adding a meta tag to the head section, so the charset became defined.</p>
+<h2>Blogfeed on stut.de</h2>
+<p><code><br />
+</code></p>
+<h2>Current Posts in my Tech-Blog</h2>
+<h3><a href="'.$item['link'].'" target="_blank">'.$item['title']."</a></h3>
+<p>\n"; echo " ".$item['atom_content']." \n"; } // only for the first item after the completely displayed ones: if ($itemCounter == $numberOfFullyDisplayedItems+1) { echo "</p>
+<h3>More Items</h3>
+<p>\n"; echo "</p>
+<ul>
+<ul>
+<ul>
+<ul>
+<ul>\n";</ul>
+</ul>
+</ul>
+</ul>
+</ul>
+<ul>
+<ul>
+<ul>
+<ul>
+<ul>}</ul>
+</ul>
+</ul>
+</ul>
+</ul>
+<ul>
+<ul>
+<ul>
+<ul>
+<ul>if ($itemCounter &gt; $numberOfFullyDisplayedItems) {</ul>
+</ul>
+</ul>
+</ul>
+</ul>
+<ul>
+<ul>
+<ul>
+<ul>
+<ul>echo '</ul>
+</ul>
+</ul>
+</ul>
+<li><a href="'.$item['link'].'" target="_blank">'.$item['title']."</a></li>
+</ul>
+<p>\n"; } } // if there were more items: close the UL if ($itemCounter &gt; $numberOfFullyDisplayedItems) { echo " \n"; } ?&gt;</p>
+<p>Now this code needs to get on the front page. The first obvious way would be to include it on index.php - but what if the start page is called index.html and changing the name to index.php is not an easy option?<br />
+Answer: Include blogfeed.php as an IFRAME. This is straightforward (if you are fluent in HTML and CSS):<br />
+<code></code></p>
+<div id="rightbar" style="float:right;width:30%;"><img src="{{ site.baseurl }}/assets/mst.jpg" alt="Portrait of Martin Stut (JPG 5.5kB)" width="112" height="169" align="right" /><br />
+Current<br />
+posts of my <a href="http://stut-tech.blogspot.com/" target="_blank">tech-blog</a></div>
+<p>You can view the result, together with a 1996 photo of me, at http://www.stut.de/martin.html</p>

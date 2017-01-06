@@ -15,6 +15,10 @@ slogan: "Information Technology Tailored to You" # to be included at the top of 
 logofile: "/images/logo-98x59px.png" # used only if this variable is active
 
 # Build settings
+#gems: [jekyll-paginate]
+#paginate: 20
+#paginate_path: "/blog/page:num/"
+permalink: /:year/:title.html
 markdown: kramdown
 defaults:
   -

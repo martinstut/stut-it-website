@@ -1,0 +1,68 @@
+---
+layout: post
+title: Trying to decide on a technology - Phases of Documentation Use
+date: 2009-05-23 10:39:00.000000000 +02:00
+type: post
+published: true
+status: publish
+categories:
+- organization
+tags:
+- blog
+- documentation
+- mindmap
+- phases
+- wiki
+meta:
+  blogger_blog: orgblog.stut.de
+  blogger_author: Martin Stut
+  blogger_291919a75f8eb005b402c26d12db9c4b_permalink: '3542763869857823350'
+  _edit_last: '8168498'
+  _wpas_skip_twitter: '1'
+author:
+  login: martinstut
+  email: martin.stut@gmx.de
+  display_name: Martin Stut
+  first_name: ''
+  last_name: ''
+---
+<p>So what should I use for documentation purposes?<br />
+Probably the answer is "it depends". But I want my ideas scattered among as few places as possible, so I don't want to use every possible technique for every possible thing. Because there won't be the single ideal solution, I'll have to live with multiples techniques and thus multiple places of documentation.</p>
+<p>My idea is, that the requirements of a documentation system vary by the project phase it is used in. I think in these phases:</p>
+<p><span style="font-size:130%;"><span style="font-weight:bold;">1. Idea</span></span></p>
+<p>Something comes into my mind. I want to make a very very quick note, faster than the fading time of my ultra short time memory, which is somewhat between 9 and 15 seconds. Booting a netbook would take too long, so I grab my pocket computer, start the note program and jot down a note of 2 or 3 lines (on my old palm this was even faster: push one single "note" hardware button, hit "new note" and I'm ready to type). This happens to me dozens of times per day.</p>
+<p>When I have enough concentration and the reach of a "real" computer, I want to put these notes into a system, so they are arranged and findable.<br />
+Usually there is no sharing yet, but a large need of portability. Often enough, those concentrated times are away from home or office or network connectivity. So on-line techniques are unusable in the idea phase, which means that blogs and wikis are out of the game. HTML files are too hard to create, too hard to rearrange and too permanent - then tend to hang around in the intranet for years, which is inadequate for an idea I have dropped a few months after inception. A good creation and re-arrangement tool for HTML files might solve this, but I have yet to find or create such a tool.<br />
+So the remaining candidates are the "single file for many ideas" solutions like mind maps or TiddlyWiki. Mind maps are a single hierarchy that can grow well, TiddlyWiki is more scattered with cross links, so ideal for less hierarchically structured information. The MPTW variant of TiddlyWiki can do both, hierarchical and cross linked.<br />
+Mind Maps are very fast in (re-)arranging, but harder to export to a sharable solution.</p>
+<p><span style="font-style:italic;">So the winner for the idea phase is MPTW, with Mind Maps being a close second.</span></p>
+<p><span style="font-weight:bold;font-size:130%;">2. Experiment</span></p>
+<p>After incubating an idea (such as "try setting up a tabular database within DokuWiki") for enough time, I might eventually decide to give it a try - an experiment starts. When I do that, I'm usually within network range, so a blog or wiki is an option. Because it's only an experiment, possibly involving a not yet secured application, I want to keep my notes confidential to me or very few colleagues (IT staff). The group permitted to see my notes varies by experiment, so a blog, visible by a hard administered group of people, is not (yet) adequate. A wiki with carefully chosen access permissions might be.<br />
+I want to keep information gathered in this phase, so I know later (e.g. when setting up a second or third copy of the service) which tricks worked and which didn't to get the thing going. This means, I'll want to store the results in a place that'll live longer than TiddlyWiki or mind maps.<br />
+HTML files on the intranet are too public for the experiment phase.<br />
+The sequence of actions is important, so a slightly hard to rearrange format like a wiki is o.k.</p>
+<p><span style="font-style:italic;">So a Wiki like DokuWiki is the winner in the experiment phase.</span></p>
+<p><span style="font-size:130%;"><span style="font-weight:bold;">3. Test</span></span></p>
+<p>After the experiment has shown in single or dual user mode, that the service can really do something useful, I usually invite a few real users (not just IT staff) to try it. "I think it works, but don't rely too much on it yet, tell me what to do better."</p>
+<p>The users need a manual, FAQ and similar stuff. A discussion area would be nice too.<br />
+The IT people need a place to add many small scattered bits of experience to an already prearranged administration manual.</p>
+<p>The big thing here is sharing, so only networked techniques are an option here. A blog isn't structured enough (just a sequence of articles), HTML files aren't flexible enough and certainly can't accommodate user input.<br />
+In my opinion, it's acceptable for offline-created contributions to be integrated later back in the office. A read only HTML copy of the wiki should be o.k. for viewing while disconnected.</p>
+<p><span style="font-style:italic;">So the winner for the test phase is the networked wiki.</span></p>
+<p><span style="font-weight:bold;font-size:130%;">4. Production</span></p>
+<p>When the test went well, the service is put into production use for a large number of users, possibly the entire corporation. Manuals etc. should have been created in the test phase, but may need refinement now. Perhaps usage instructions and administrative manuals need a lot more detail now. Users may want to discuss about creative ways to use the service. So a lot of editing takes place, possibly for a lot of users. Everything happens on the net.<br />
+This is the time when read-only access for all users and read-write access for documentary and administrators needs to be distinguished. With that kind of massive sharing, mind maps are long lost and TiddlyWiki is too hard to edit by a group. A blog may be o.k. for announcements, but not for editing administrative procedures. Static HTML files may be an option for the user manual, but only if there are very few people editing.</p>
+<p><span style="font-style:italic;">Is there anything else than the wiki for the production phase?</span></p>
+<p><span style="font-size:130%;"><span style="font-weight:bold;">5. Legacy</span></span></p>
+<p>After many years in production use, eventually the demand for this kind of service diminishes. Perhaps there are many new demands, causing lots of documentation needs. Eventually a new project is started to introduce a successor service. When that is in the test phase, documentation needs increase due to transition issues. Questions like "How do I get the data out of the old system?" could be dominating the scene.<br />
+All of this happens in the network, with a lot of sharing. <span style="font-style:italic;">So again, the wiki is best for the legacy phase.</span></p>
+<p><span style="font-weight:bold;font-size:130%;">6. History</span></p>
+<p>When the last user has quit using the old system and all the data is transitioned to the new system, there is still need for documentation, especially with respect to compliance requirements. There may be laws demanding that processes (how were things supposed to be done back then?) are documented as long as 10 years. For medical information that time span could be up to 30 years after the death of the patient, which could be more than a century after the treatment of a young child.<br />
+In this phase, which could also be called "archive", nothing is going to change - in fact nothing is <span style="font-style:italic;">permitted</span> to change, perhaps even protected by digital signatures and friends. Network access as a prerequisite to documentation access is acceptable. Publicity varies, depending on the amount of detail in the documentation, but is going to be constant.</p>
+<p><span style="font-style:italic;">I consider static HTML files best for the history phase</span>. They can be created by an HTML export from the legacy phase wiki.</p>
+<p><span style="font-size:130%;"><span style="font-weight:bold;">Summary</span></span></p>
+<p>In the idea phase, I consider a TiddlyWiki or perhaps a mind map as the best solution.<br />
+As soon as the experiment starts, I'd move all documentation to a DokuWiki or equivalent.<br />
+For offline use, I'd create periodic HTML exports of the DokuWiki.<br />
+For the history phase, I'd put the last HTML export on a static website, probably protected by standard web server authentication methods (e.g. .htaccess on Apache).</p>
+<div class="blogger-post-footer"><img src="{{ site.baseurl }}/assets/5797774679478677830-3542763869857823350?l=orgblog.stut.de" alt="" width="1" height="1" /></div>

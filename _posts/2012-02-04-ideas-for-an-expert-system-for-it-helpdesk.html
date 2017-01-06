@@ -1,0 +1,139 @@
+---
+layout: post
+title: Ideas for an Expert System for IT Helpdesk
+date: 2012-02-04 16:59:34.000000000 +01:00
+type: post
+published: true
+status: publish
+categories:
+- idea
+tags: []
+meta:
+  _edit_last: '8168498'
+  _wpas_done_linkedin: '1'
+  publicize_results: a:1:{s:7:"twitter";a:1:{i:16191471;a:2:{s:7:"user_id";s:10:"martinstut";s:7:"post_id";s:18:"165826843004518400";}}}
+  _wpas_done_twitter: '1'
+  _oembed_0217644ea91c0b8de7f56cd561d7453e: "{{unknown}}"
+author:
+  login: martinstut
+  email: martin.stut@gmx.de
+  display_name: Martin Stut
+  first_name: ''
+  last_name: ''
+---
+<p>In my spare time, I'm helping a christian charity that runs their own IT helpdesk for about 1000 users, distributed across much of the globe. This helpdesk service is greatly appreciated by the users, but it is also absorbing (too) much of the capacity of the IT team.</p>
+<p>Given that number of users, similar issues tend to recur. So the idea of a pre-screening website came up, that would ask certain questions and point to applicable instructions - or to a human (i.e. mail to <a title="Request Tracker" href="http://bestpractical.com/rt/" target="_blank">RT</a>), if there is no standard answer for the user's situation.</p>
+<p>In the computer science world, such a system is called an "expert system", because it tries to mimic an expert. While looking for such a system for helpdesk use, I found surprisingly little that would match:</p>
+<h2>Existing Products</h2>
+<ul>
+<li><a title="Interactive Desicion Tree" href="http://code.google.com/p/interactive-decision-tree/" target="_blank">http://code.google.com/p/interactive-decision-tree/</a> : a very simple editor (PHP, creating an XML file) and viewer (HTML/JS/CSS, reading the XML file). Nice, working, but not flexible enough for the complexities of real IT issues.</li>
+<li><a title="CLIPS" href="http://clipsrules.sourceforge.net/" target="_blank">CLIPS</a> is a popular expert system, created by NASA, but almost without a web interface. The <a title="PHLIPS" href="http://phlips.sourceforge.net/" target="_blank">PHLIPS</a> project provides a PHP extension, so PHP gets a basic interface to a CLIPS environment. Unfortunately, this only works reliably with Apache 1.3, because the multi-threaded architecture of Apache 2 causes stability issues with the single-threaded CLIPS architecture.</li>
+<li><a title="D3web" href="http://www.d3web.de/" target="_blank">D3web</a> is a huge Java framework, requiring a lot of effort to get a system going. Probably too complex for that charity.</li>
+</ul>
+<p>All other helpdesk software I found was about handling tickets by humans, not solving the underlying issue by a machine.</p>
+<p>Perhaps I just didn't use the right search terms. Does anybody out there have an idea, what search terms would lead to expert system backed helpdesk or troubleshooting systems?</p>
+<p>So without a web-ready expert system shell available, I started <strong>thinking how I'd create one</strong>. So far I have not written a single line of code, but the idea might inspire others to do it - or to point me to someone who has done something similar.</p>
+<h2>Client (Customer) Interface</h2>
+<ul>
+<li>The user (client, customer, person having a problem and looking for help) enters the website of (starts a session with) the expert system, e.g. helpdesk.example.com.</li>
+<li>The user selects the area of trouble, e.g. "I can't retrieve my e-mail".</li>
+<li>The system starts asking yes/no questions, e.g. "Are you sure that your Internet connection really works?", "Has it ever worked after October 2011 (when we've changed servers)?".</li>
+<li>The user answers the question by selecting "yes", "no", "I don't know", plus possibly a comment field (e.g. explaining why the user doesn't know the answer). Or maybe the user can choose "Could you please rephrase that question?".</li>
+<li>Depending on the user's answers, the system asks more questions.</li>
+<li>When the system is reasonably sure what the underlying issue is, it tells the user and shows proper instructions.</li>
+<li>When the system has to give up (nothing more to ask, too few precise answers from the user) , it sends the log of the interaction to a human helpdesk technician.</li>
+</ul>
+<h2>Representing the Knowledge</h2>
+<p>The underlying expert knowledge needs to be stored in some data structure, residing e.g. in a database like MySQL. Here is my idea of how to represent that expert knowledge in a way that's ready to use for a machine (program):</p>
+<h3>Fact</h3>
+<p>A short statement, represented by a short string ("atom" in LISP or Ruby parlance), e.g.<em> mail_works</em>,<em> worked_after_server_change</em> or <em>internet_connection_ok</em>.</p>
+<p>For each session (user problem instance), each fact has a state of "true" (either by user input or by logical inference [see rules below]),  "false" (dto.), "user doesn't know" or "not yet considered".</p>
+<p>The state of the interaction is basically the combined state of all facts.</p>
+<p>Certain states of certain facts are solution candidates: If e.g. <em>internet_connection_ok</em> becomes known to be false, while looking for the reason of <em>not (mail_works)</em>, then there is only one way out: "Go, fix your Internet connection".</p>
+<p>So the full data structure (database schema) of a fact is</p>
+<ul>
+<li>ID (number for handling in the database)</li>
+<li>atom_string (one word, suitable for an atom in an underlying expert system)</li>
+<li>is_solution: whether and when this fact is a solution: "always", "when_true", "when_false", "never"; the description should tell the user why.</li>
+<li>for each session (possibly in PHP session storage): state
+<ul>
+<li>user_input: one of "not yet asked", "true", "false", "don't know"</li>
+<li>user_comment: thoughts of the user, why he can't tell or why he thinks it is the way he wrote</li>
+<li>deduction_result: one of "not yet determined", "true", "false", "don't know". May need to be changed, if the user changes his input at a later stage.</li>
+</ul>
+</li>
+</ul>
+<h3>Rule</h3>
+<p>A description of a material implication, which combinations of facts determine the state of another fact, e.g.</p>
+<p><em>not (internet_connection_ok) =&gt; not (mail_works)</em></p>
+<p><em>account_settings_outdated =&gt; not (worked_after_server_change)</em></p>
+<p>This needs to be handled with the full care and can be used with the full power of propositional logic.</p>
+<p><em>a =&gt; b</em> can be pronounced as "<em>a</em> implies <em>b</em>", or <strong>if <em>a</em> is true, then</strong> (it can be implied with mathematical certainty that)<strong> <em>b</em> must also be true</strong>. If <em>a</em> is not true, then nothing is known about <em>b</em>. If <em>b</em> is true, then nothing is known about <em>a</em>, because <em>b</em> can be true for other reasons than <em>a</em>.<br />
+In the above example: if the internet connection is broken, then mail will certainly not work. But "mail not working" can be true for many other reasons than a broken internet connection.</p>
+<p>By the rules of mathematical logic (the material implication (=&gt;) works that way), <em>a =&gt; b</em> is fully equivalent to <em>not (b) =&gt; not (a)</em>, so if <em>b</em> is false, then <em>a</em> must be false too, because if <em>a</em> were true, <em>b</em> would also have to be true, which it isn't.<br />
+Applied to the above example, another way equivalent to put the rule is<br />
+<em>mail_works =&gt; internet_connection_ok</em><br />
+In other words, if you know that your mail works, you can imply that your internet connection is working too.</p>
+<p>It may require more than one condition to be able to infer a fact. So the rules need to have the option of at least two conditions, each of them negate-able, and a link operator (AND, OR, perhaps XOR); the result may be negated, so the <strong>full data structure of a rule</strong> is:</p>
+<ul>
+<li>ID: for identifying the rule in the database</li>
+<li>short_name: to keep a list of reasons short</li>
+<li>long_description: human readable sentences what this rule is really saying and why it is true; optional but highly recommended</li>
+<li>cond1_fact: ID of fact</li>
+<li>cond1_negate: true or false; true means "negate fact1"</li>
+<li>cond2_fact: ID of fact, may be empty if the rule depends on only one single fact</li>
+<li>cond2_negate: true or false; true means "negate fact2"</li>
+<li>operator: "AND", "OR", "XOR"; may be empty if cond2_fact is empty</li>
+<li>result_fact: ID of the fact that's being set by this rule.</li>
+<li>result_negate: true or false; true means "set the fact to false if the condition(s) are true"</li>
+</ul>
+<h3>Question</h3>
+<p>Somehow the facts need to be given to the system. A machine is perfectly happy dealing with an atom-like fact, but the average end-user (typically an expert in theology, not technology) would feel being treated rude if being asked "worked_after_server_change ? yes/no/don't know".</p>
+<p>So for each fact there should be one (or more, see below) longer string containing a question, e.g. "Are you sure that your Internet connection works?" This is a question most end users can answer with yes or no. Sometimes there may be alternative wordings for the same question. So there may be multiple questions for a single fact. One of these questions needs to be marked "preferred" (or get a numeric preference value, e.g. 1-100), so the system can know which one to present first.</p>
+<p>Some of these alternative wordings may have the opposite meaning, e.g. "Are you currently experiencing trouble with your Internet connection, so you have problems visiting other websites too?". So another attribute per question needs to be "meaning reversed" (yes/no).</p>
+<p>In a worldwide user group, people tend to prefer different languages. So for each fact there could (or rather should) be one question per language. The user could specify his preferred language(s) in his user profile on the helpdesk system, e.g. "native German, good English, very little Japanese".</p>
+<p>So the full data structure of a question could be:</p>
+<ul>
+<li>ID: to identify it within the database</li>
+<li>fact_id: ID of the fact, the state of which would be set if the question were answered; there can be several questions for a single fact.</li>
+<li>text: the string that's going to be presented as a question to the user</li>
+<li>language: id of the language the text is in</li>
+<li>meaning_reversed: yes or no; yes means that answering "yes" to this question should set the fact's state to "no"</li>
+<li>level_of_preference: 0-10; higher preference questions will be suggested first to the user</li>
+</ul>
+<h3>Description</h3>
+<p>When the system describes what it has concluded (or what the user has entered), it should present its findings in understandable human language to the user. Because there are multiple languages (English for users, English for technicians, German, Spanish, ...), a single description field won't suffice. Additionally, a "yes" state and a "no" state may have quite different wordings. So there is need for a separate table of descriptions:</p>
+<ul>
+<li>id: technical field for the database; possibly unneeded</li>
+<li>fact_id: fact this description refers to</li>
+<li>language_id: language this description is written in</li>
+<li>fact_state: "true", "false", "don't know"</li>
+<li>text: the description of the fact when being in the specified state</li>
+</ul>
+<h2>Rule (Inference) Engine</h2>
+<p>Given all these (database) records about the state (within the session) of facts, rules and questions, the core logic of the expert system (I'll call it "rule engine") needs to decide, which question to ask the user next. Because each question is closely linked to exactly one fact, the task can be reworded to "determine, which fact to consider next".</p>
+<p>Core parts of the algorithm could be:</p>
+<ul>
+<li>Facts with known state (yes, no, don't know) don't need to be reconsidered.</li>
+<li>For each rule, check whether the rule could trigger (left side of the "=&gt;" evaluates to true, right side is unknown or yet unconsidered) using the known facts. This method is called "forward chaining". Enhancement: use the reversal law for rules having only one fact on the left side, i.e. right side of the "=&gt;" evaluates to false. Further enhancement: do so with rules having a known right side fact and one of two known left side facts, if the states, negators and link operators permit to draw a conclusion.
+<ul>
+<li>If a rule can be triggered, trigger it, thus putting more facts into a known state.</li>
+</ul>
+</li>
+<li>For each rule, check whether it could trigger if just one (or, in "desperate mode", two) additional fact(s) would be known.
+<ul>
+<li>take note of this "interesting" facts. If a fact becomes interesting in several rules, increase its score. If a fact would only be useful if a second fact is also known, then increase the score only by a little.</li>
+<li>select the fact that has occurred most often and present its question to the user; record the answer, set "unconsidered" to false.</li>
+<li>If no such fact (and corresponding rule) is found, give up, "can't solve the problem with so few supplied facts", send the log of the session to a human technician.</li>
+</ul>
+</li>
+<li>If a fact reaches a state where it becomes a solution (e.g. <em>internet_connection_works</em> becomes a known false), tell the user the solution and the path (facts and rules) that have led to the conclusion</li>
+</ul>
+<h2>Possible Extensions of the Basic Design</h2>
+<p>in rough order of complexity, easiest first:</p>
+<p>Save the state of the sessions for several weeks, in order to enable the user to return later and continue the session, e.g. after having determined the answer to a hard question. Enable the user to supply modified (corrected) fact answers, especially for facts previously answered with "don't know", or in cases of "a second look has revealed that things actually are different".</p>
+<p>Specify a preset probability for facts as an additional criterion for choosing them, e.g. "a lot of people forgot to change their account settings when we switched servers" would increase the preset probability of <em>account_settings_outdated</em>.</p>
+<p>Specify an "easiness to find out" for facts. Facts that are easier to find out (for the end-user) will be asked first.</p>
+<p>Multiple possible solutions: if a fact is not a definite solution, but only a possible one, don't terminate, but continue investigating.</p>
+<p>Use fuzzy logic for fact values (values 0...1) instead of Boolean logic (false or true, nothing else).</p>
+<p>Specify a probability for rules, e.g. "if (100% a and 100% b) then there is an 80% probability of c".</p>

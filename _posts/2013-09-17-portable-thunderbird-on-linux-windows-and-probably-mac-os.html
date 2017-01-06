@@ -1,0 +1,58 @@
+---
+layout: post
+title: Portable Thunderbird on Linux, Windows and probably Mac OS
+date: 2013-09-17 15:08:35.000000000 +02:00
+type: post
+published: true
+status: publish
+categories:
+- general
+tags:
+- linux
+- portable
+- profile
+- synchronize
+- thunderbird
+- windows
+meta:
+  _publicize_pending: '1'
+  _wpas_done_182682: '1'
+  publicize_twitter_user: martinstut
+  _wpas_done_182683: '1'
+  _publicize_done_external: a:1:{s:7:"twitter";a:1:{i:16191471;b:1;}}
+  _oembed_36d983e42db9187c67f14614d7d1a61c: "{{unknown}}"
+author:
+  login: martinstut
+  email: martin.stut@gmx.de
+  display_name: Martin Stut
+  first_name: ''
+  last_name: ''
+---
+<div lang="x-unicode">
+<p>For some use cases, you'll want to store your Thunderbird profile in a location completely outside the usual places, possibly changing paths (varying mount points of USB memory sticks, varying synchronized directories on different machines), and you don't want to fiddle around with the profile.ini configuration file.</p>
+<p>In the Windows world, there are Portable Apps to address this kind of requirement. But in Linux, there are no Portable Apps. But <b>there is a way to run Thunderbird to use a portable profile:</b> by using the command line option</p>
+</div>
+<pre> <tt>-profile</tt><tt> "/path/to/profile"</tt></pre>
+<p lang="x-unicode"> </p>
+<p lang="x-unicode">To verify this method, which I learned about from <a href="http://kb.mozillazine.org/Running_from_a_USB_drive_%28Thunderbird%29" target="_blank">http://kb.mozillazine.org/Running_from_a_USB_drive_%28Thunderbird%29</a> , I moved my profile (which happened to be the backup before I reformatted my drive) from /home/martin/.thunderbird/nnnnnnnn.default/* to .../syncstore/tbprofile , so now there is .../syncstore/tbprofile/prefs.js .</p>
+<div lang="x-unicode">
+<p>Then I created a little shell script, e.g. in .../syncstore/thunderbird.sh , containing just two lines:</p>
+<pre><tt>#!/bin/sh<br />thunderbird -profile "./tbprofile/"</tt></pre>
+</div>
+<p lang="x-unicode"> </p>
+<p lang="x-unicode">The relative path ./tbprofile/ will do. This makes it easier to move the little shell script across devices with different paths.</p>
+<p lang="x-unicode">On Ubuntu Linux, there is no need to specify the path to the Thunderbird executable, because thunderbird is in the OS path and can thus be found directly. Other Linux versions or Mac OS X may be different.</p>
+<p lang="x-unicode">You'll need to set the execute permission, e.g. using your file manager's properties tab.<br /> Of course you'll need to replace .../syncstore with the path where you want your profile to reside, e.g. synchronized storage or a USB memory stick.</p>
+<p lang="x-unicode">Double clicking the shell script will start Thunderbird using the portable profile.</p>
+<h2>Share across Operating Systems</h2>
+<p lang="x-unicode"><b>I was p<b>leasantly surp<b>rised to lea<b>rn, that <b>y</b></b></b></b>ou can share a Thunderbird profile across operating systems</b>. I have tested it with Linux vs. Windows:</p>
+<p lang="x-unicode">After arranging synchronization (e.g. TrueCrypt container in cloud storage, BitTorrent Sync, USB memory stick, ...) between my Xubuntu Linux desktop and my Windows 7 Starter netbook, I just had to create a little batch file for the windows side containing</p>
+<div lang="x-unicode">
+<pre><tt>"C:\Program Files\Mozilla Thunderbird\thunderbird.exe" -profile "D:\...\<tt>sync</tt>store\tbprofile"</tt> </pre>
+<p> </p>
+<p>The quotes are important. <tt>C:\Program Files\</tt> varies with Windows version (XP vs. 7), language (German vs. English) and bitness (32 vs. 64). Of course you need to replace <tt>D:\...\<tt>sync</tt>store\tbprofile</tt> with the synchronized path on the windows side.</p>
+</div>
+<p lang="x-unicode">A modified copy pf the desktop link probably would have done too.</p>
+<p lang="x-unicode">This enables me to switch machines hourly (waiting for the profile to synchronize) while keeping the same profile.</p>
+<p lang="x-unicode"> </p>
+<p lang="x-unicode">Because this profile sharing works on Linux and Windows, it'll probably work on Mac OS X as well (I don't have a Mac to try).</p>

@@ -1,0 +1,81 @@
+---
+layout: post
+title: Internationalizing AutoIt Applications by Something Similar to GNU Gettext
+date: 2016-06-10 16:23:01.000000000 +02:00
+type: post
+published: true
+status: publish
+categories:
+- howto
+tags:
+- au3
+- autoit
+- gettext
+- i18n
+- internationalization
+- programming
+- translation
+- windows
+meta:
+  _publicize_done_external: a:1:{s:7:"twitter";a:1:{i:182683;s:56:"https://twitter.com/martinstut/status/741274480362684416";}}
+  _rest_api_published: '1'
+  _rest_api_client_id: '43452'
+  _publicize_job_id: '23702440988'
+  publicize_linkedin_url: https://www.linkedin.com/updates?discuss=&scope=48843306&stype=M&topic=6147040168604942337&type=U&a=yV90
+  _publicize_done_243110: '1'
+  _wpas_done_182682: '1'
+  _publicize_done_243111: '1'
+  _wpas_done_182683: '1'
+  publicize_twitter_user: martinstut
+author:
+  login: martinstut
+  email: martin.stut@gmx.de
+  display_name: Martin Stut
+  first_name: ''
+  last_name: ''
+---
+<p>If you want to jump directly to the technical stuff, how to internationalize your AutoIt application and to download the code, go to <a href="https://github.com/martinstut/gettext_au3" target="_blank">https://github.com/martinstut/gettext_au3</a>.<br />
+The blog post here is more about the background and reasoning why I did things the way I did them.</p>
+<h2>The Issue</h2>
+<p>While developing an <a href="http://www.autoitscript.com" target="_blank">AutoIT</a>-based application for an international christian organization, the need came up to provide this application for users of different native languages. So <code>MsgBox(64, "App Title", "Please reboot your computer to complete the process.")</code> is no longer good enough. The application needs to present its user interface in a different language, depending on the user's preference.</p>
+<p>Of course there are many approaches to implement this. But however you do it, you will need two different toolkits: one for the translator and one for the programmer.</p>
+<p>The programmer will need something to define the translatable strings or, preferably, extract them from the source code.<br />
+The translator will need something to edit the translation.<br />
+The programmer will need something to incorporate the translation in to the program.</p>
+<p>And all of this should be repeatable with little effort when a few strings in the program change - don't make the translator retranslate everything if you just add two strings for a new little feature of your program.</p>
+<p>To avoid reinventing the wheel, I decided to go the route many large open source projects go: gettext.</p>
+<h2>A Solution: gettext</h2>
+<p>For a general overview of the GNU gettext system you can read <a href="https://en.wikipedia.org/wiki/Gettext" target="_blank">https://en.wikipedia.org/wiki/Gettext</a> . You can find detailed information about gettext in <a href="https://www.gnu.org/software/gettext/manual/index.html" target="_blank">https://www.gnu.org/software/gettext/manual/index.html</a> .</p>
+<p>In a nutshell, gettext works like this:</p>
+<ul>
+<li><strong>In your source code</strong>, wrap all strings that need translation into a call to gettext, so the above code line would read <code>MsgBox(64, "App Title", gettext("Please reboot your computer to complete the process."))</code> . In a number of cases it's not that easy, e.g. if you are intermixing variables, but there are solutions, mostly built around <code>sprintf</code> and friends.</li>
+<li>Add a runtime library to your program - all the calls to <code>gettext()</code>  evaluate at run time, when the language is known, not at compile time.</li>
+<li>Add some method to determine the language to use. Looking at the OS language is helpful, but in case your haven't yet translated your program into Korean, users of Korean OS versions should have at least a choice of the few languages that are available.</li>
+<li><strong>In your build process</strong> (you will need one), run <code>xgettext</code> on your source code files to extract the translatable strings into a <code>messages.pot</code>  (portable object template) file. Repeat this whenever a translatable string changes or is added. After the first run of <code>xgettext</code>, generate  <code>[language].po</code>  (portable object) from  <code>messages.pot</code>. In the C world, run the <code>msginit</code> program.<br />
+If the translatable strings change, i.e. a  <code>messages.pot</code> is modified, merge it into the existing <code>[language].po</code> files by the <code>msgmerge</code> program.</li>
+<li><strong>Your translators</strong> add translations to of all the lines into their respective <code>[language].po</code> file. After the translator has completed her work, <code>[language].po</code> contains pairs of lines like (this example would be in de.po for German):
+<pre>msgid "Please reboot your computer to complete the process."
+msgstr "Bitte starten Sie Ihren Computer neu um den Vorgang abzuschließen."</pre>
+<p>The translators can use a variety of tools, ranging from simple text editors like <a href="https://notepad-plus-plus.org/" target="_blank">Notepad++</a> to specialized CAT programs like <a href="http://www.omegat.org/" target="_blank">OmegaT</a>. My personal favourite is <a href="https://poedit.net/" target="_blank">PoEdit</a>, as it can remember previous translations like OmegaT, but is even easier to handle than a text editor.</li>
+<li><strong>Your build process</strong> creates compilable files, to be included into the distributed multilingual product, from the translated <code>[language].po</code> files. In the C world, use the <code>msgfmt</code> program to create binary <code>[language].mo</code> (machine object) files.</li>
+<li>Finally, <strong>your build process</strong> can compile the finished, multilingual product.</li>
+</ul>
+<h2>Implementation for AutoIt</h2>
+<p>Gettext originated in a C-centric, fully compiling world, assuming a setup.exe program to install the product. But one of AutoIt's strengths is the ability to create a standalone executable, capable to run without installing (portable program). So it's better to include some compilable file rather than adding a .mo file per language to the distribution.</p>
+<p>Here is how I set up the above gettext infrastructure for AutoIt:</p>
+<ul>
+<li><strong>In your source code</strong>, just use <code>gettext("english version of translatable string")</code>. When concatenation, variables, quotes and other things beyond simple strings are involved, things aren't that easy, but the <code>StringFormat()</code> function, which is the AutoIt equivalent of <code>sprintf()</code>, helps a lot. Read the "Prepare Source Code" section of <a href="https://github.com/martinstut/gettext_au3" target="_blank">https://github.com/martinstut/gettext_au3</a> for detailed options how to deal with or work around such situations.</li>
+<li>The runtime library is <code>gettext_au3_runtime_library.au3</code> - just <code>#include</code> it.</li>
+<li>To determine and store the user's preferred language, there is a function <code>gettext_au3_language_select_ui()</code> in the runtime library. You need to store the code (2 characters) of the chosen language in a global variable with a special name, like this:<br />
+<code>Global $gettext_au3_lang = gettext_au3_language_select_ui($apptitle, gettext_au3_language_list(), "en")<br />
+</code>This presents a radio buttoned choice of languages (returned by automatically generated function <code>gettext_au3_language_list()</code>) to the user, with the OS language being the default position of the button. If the OS language has no translation available, the default language in the third parameter is offered as a default. If even that is not available (which shouldn't happen, because you have planned for a default language), the last one in the list of languages is used.</li>
+<li><strong>On the build machine</strong> (assuming a Windows OS, because AutoIt is Windows only), install the Windows binaries of the general GNU gettext utilities, which can be obtained from <a href="https://mlocati.github.io/gettext-iconv-windows/" target="_blank">https://mlocati.github.io/gettext-iconv-windows/</a> . Running the downloaded executable installs the binaries in a subdirectory of <code>C:\Program Files</code> with the option of adding that subdirectory to your <code>%PATH%</code> environment variable. Do use that option.</li>
+<li>To extract the translatable strings from the source code, the same <code>xgettext</code> program as for C is used, which works remarkably well, because AutoIt is sufficiently similar to C in how function calls look like.</li>
+<li>To create <code>[language].po</code>, you can just copy <code>messages.pot</code>. No special msginit program needed.</li>
+<li>To merge changes of <code>messages.pot</code> into <code>[language].po</code>, the standard <code>msgmerge</code> program works. For the detailed command line, see the "Merge Updated Messages and Existing Translations" section of<br />
+<a href="https://github.com/martinstut/gettext_au3" target="_blank">https://github.com/martinstut/gettext_au3</a> .</li>
+<li><strong>The translators</strong> filling the [language].po files can use any tool of their choice. Just make sure that not special feature are used. msgid and msgstr lines must be single line, uninterrupted strings, enclosed in double quotes.</li>
+<li><strong>When building the product</strong>, the translated <code>[language].po</code> files are then processed by the core program of this tool set, <code>gettext_au3_msgfmt.au3</code> , to generate a single <code>#include</code>able source code file <code>gettext_au3_gettext.au3</code> , containing the combined translations of all languages of the collection of <code>??.po</code> files. <code>[language]</code> must be exactly two characters, such as in  <code>ko.po</code> for Korean.</li>
+<li>After all these preparations, compiling the final product can then be as easy as right-click/compile.</li>
+</ul>
+<p>&nbsp;</p>

@@ -1,0 +1,40 @@
+---
+layout: post
+title: Use (Doku)Wiki as a Documentation System?
+date: 2009-05-23 06:49:00.000000000 +02:00
+type: post
+published: true
+status: publish
+categories:
+- organization
+tags:
+- documentation
+- dokuwiki
+- synchronization
+- wiki
+meta:
+  blogger_blog: orgblog.stut.de
+  blogger_author: Martin Stut
+  blogger_291919a75f8eb005b402c26d12db9c4b_permalink: '5694690758231990456'
+  _edit_last: '8168498'
+  _wpas_skip_twitter: '1'
+author:
+  login: martinstut
+  email: martin.stut@gmx.de
+  display_name: Martin Stut
+  first_name: ''
+  last_name: ''
+---
+<p>By a wiki, I mean a web based piece of software, installed in an intranet for privacy. I have tried <a href="http://www.dokuwiki.org/">DokuWiki</a>. It is a great piece of software. I can add information really quick (wiki is said to mean quick), I can tag it and search for it. Links are created automatically when I use WikiWords in CamelCaps or put the word/phrase in [[double square brackets]].<br />
+DokuWiki (and possibly other wikis) offer a good deal of access control; enough to make sure that configuration details are read only by the IT staff. It's probably not safe enough for passwords, but there are solutions for those too, e.g. KeePass.</p>
+<p><span style="font-size:130%;"><span style="font-weight:bold;">Hard to use while disconnected</span></span><br />
+Because a wiki is on the web (with a few exceptions, e.g. TiddlyWiki), it's by definition hard to use in disconnected mode. But I see a few options (none of them tried yet) to get around this limitation:</p>
+<p><span style="font-weight:bold;">1. Create an HTML copy</span><br />
+Before I leave the office, I could use wget or a similar tool to rip the entire wiki into a set of HTML files. I could copy these files on my netbook and have robust read-only access on the road. Unfortunately, such a scheme can't have direct write access, so I'd have to write new stuff to a separate file and integrate it later when back at the office. Not nice, but workable.</p>
+<p><span style="font-weight:bold;">2. Run a Wiki Server on the Netbook plus Synchronization Plugin</span><br />
+I didn't really expect this to be possible, but there are synchronization plugins for DokuWiki. On a quick search this morning, I found <a href="http://www.dokuwiki.org/plugin:sync">sync</a> and <a href="http://www.dokuwiki.org/plugin:freesync">freesync</a>. Development of both has begun as late as February 2009, so this is really new.<br />
+Running a full Apache web server on a netbook may be stretching it, but it should be possible. Perhaps I'll try it some distant day and report on my <a href="http://stut-tech.blogspot.com/">technical blog</a>.</p>
+<p>One limitation of this scheme is the need to synchronize over the network. This is a show stopper in my typical use case: I leave the office in a hurry, just synchronizing to the USB pen. I don't have the time to boot the netbook, connect it to the network, start the web server, start Firefox, move to the synchronization page, trigger the synchronization, wait for the synchronization to finish, shutdown the netbook, pack the netbook. In short: when I leave the office (network), the netbook will not be in synchronized state.<br />
+The next morning I'm on the train, outside of network connectivity, so I can't synchronize and the netbook will stay out of sync. But I'm going to produce a lot of ideas, to do items, clarifications etc. So the already out-of-sync netbook copy will be modified further. When I return to the office, there is a lot to synchronize and chances are high that there will be conflicts. Resolving synchronization conflicts is probably harder than integrating separate notes, so I'll better create those separate notes.</p>
+<p><span style="font-weight:bold;">3. Synchronize the raw data files through the USB pen</span><br />
+DokuWiki stores its pages in simple plain text files, not in a database. I could synchronize the text file using unison or a similar tool, but doing so bidirectionally, and that's required when I want to be able to edit on the road, would require write access to a network share of internal wiki files. I could arrange for that access for me, because I'm the administrator, but that's not feasible for the average user.</p>

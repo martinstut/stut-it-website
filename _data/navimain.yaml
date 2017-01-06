@@ -9,6 +9,9 @@
   
 - url: /experience.html
   menuname: Experience
+
+- url: /blog/
+  menuname: Blog
   
 - url: /links.html
   menuname: Links

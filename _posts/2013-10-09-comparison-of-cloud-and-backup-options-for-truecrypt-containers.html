@@ -1,0 +1,126 @@
+---
+layout: post
+title: Comparison of Cloud and Backup Options for TrueCrypt Containers
+date: 2013-10-09 14:37:08.000000000 +02:00
+type: post
+published: true
+status: publish
+categories:
+- test
+tags:
+- backup
+- cloud
+- encryption
+meta:
+  _edit_last: '8168498'
+  _publicize_pending: '1'
+  publicize_linkedin_url: http://www.linkedin.com/updates?discuss=&scope=48843306&stype=M&topic=5793685379353690112&type=U&a=XDzy
+  publicize_twitter_user: martinstut
+  publicize_twitter_url: http://t.co/gYUIsB2a0d
+  _wpas_done_182683: '1'
+  _publicize_done_external: a:1:{s:7:"twitter";a:1:{i:16191471;b:1;}}
+  _wpas_done_182682: '1'
+author:
+  login: martinstut
+  email: martin.stut@gmx.de
+  display_name: Martin Stut
+  first_name: ''
+  last_name: ''
+---
+<p>By now it is common sense that personal data should only go to external services if it's encrypted.</p>
+<p>A good and common means to achieve encryption is to store the personal files inside a Truecrypt container and then to store that Truecrypt container in the cloud.</p>
+<p>But there are</p>
+<h2>Caveats with this Approach</h2>
+<ul>
+<li>Truecrypt containers are of fixed size, and thus tend to be created large, often exceeding a gigabyte. When only a few small changes are made to the files inside the container, the <em>synchronisation software should realize this and transfer only the modified portions</em>. A surprisingly high number of synchronization clients fail with this respect and thus are unsuitable for storing active Truecrypt containers.</li>
+<li><em>You need to set Truecrypt to update the container's timestamp</em> after modifications have been made. In Truecrypt version 7.1a for Windows this is in Settings / Preferences, Windows area. You need to uncheck the box "Preserve modification timestamps of file containers". This is necessary to ensure that the synchronisation software will detect that the container has changed and needs to be uploaded.</li>
+<li>Using a Truecrypt container requires the additional steps of mounting prior to use and dismounting after use. If you store the container in the cloud, <em>you'll need to wait for changes</em> (possibly made by other computers) to <em>download before you can safely mount</em>, and (harder in practice) <em>you'll need to wait for the changes</em> you've just made to <em>upload after dismounting</em>, before attempting to shutdown the computer (in particular the synchronisation software running on it). When you forget this, you're in for all kinds of conflicts, ranging from lost or overwritten changes to a corrupted file system.</li>
+</ul>
+<p>In late July 2013, I decided to spend a day to try, with Truecrypt containers in mind, various synchronization and backup</p>
+<h2>Services Tested</h2>
+<p>Cloud services on the Internet, in the order they came into my mind for testing:</p>
+<ul>
+<li><a href="https://www.dropbox.com/">Dropbox</a> - the classic. 2 GB of storage accessible on (almost) every conceivable platform.</li>
+<li><a href="http://www.telekom.de/is-bin/INTERSHOP.enfinity/WFS/EKI-PK-Site/de_DE/-/EUR/ViewProductDetails-Start?ProductRefID=0501001003878%40EKI-PK&amp;StageProductRefID=0501001003878%40EKI-PK&amp;CatalogCategoryID=&amp;ErrorByOfflineProducts=true">(Deutsche) Telekom Media Center</a> - the largest (25 GB of free storage). Maybe I had an advantage by being a customer of their telephone and Internet service.</li>
+<li><a href="http://www.teamdrive.com">Teamdrive</a> - the most secure. They claim that all content is being encrypted at the source (client) and they can't decrypt what's stored on their servers. This claim has been verified by a state data privacy office. 2 GB free.</li>
+<li><a href="http://www.wuala.com/">Wuala</a> - the big, secure ones from Switzerland. 5 GB of free storage with client-side encryption.</li>
+<li><a href="https://one.ubuntu.com/">Ubuntu One</a> - the Linux guys. 5 GB of free storage, coming prepackaged with Ubuntu Linux.</li>
+<li><a href="http://www.google.com/intl/en/drive/about.html">Google Drive</a> - the search guys. 15 GB of free storage with web office app integration.</li>
+<li><a href="http://windows.microsoft.com/en-GB/skydrive/overview#1TC=t1">Skydrive</a> - the windows guys. 7 GB of free storage to go with outlook.com.</li>
+</ul>
+<p>I've skipped box.net, because their free offer has a file size limit of 250 MB, which is too small for many Truecrypt use cases.</p>
+<p>Running on the LAN, there are less products, but a larger variety of concepts, all offering unlimited disk space - whatever hard drive you've bought for your server or peer:</p>
+<ul>
+<li><a href="http://owncloud.org/">OwnCloud</a> - the self hosted web all-in-one. An open source web application to be run by yourself on your web server.</li>
+<li><a href="http://www.crashplan.com/">CrashPlan</a> - the universal encrypting backup tool. Backs up your computer to anything - even their cloud, if you pay for it.</li>
+<li><a href="http://labs.bittorrent.com/experiments/sync.html">BitTorrent Sync</a> - the peer-to-peer newcomer (beta released just a few days before the test). Multilateral file replication with BitTorrent efficiency.</li>
+</ul>
+<p>For each service, I ran a small</p>
+<h2>Test Parcours</h2>
+<ol>
+<li><em>Download and install</em> the software. With most products, this includes <em>signing up for the service</em>. For some products I had already done that months or years ago, so in those cases I've skipped this step.</li>
+<li>Copy a freshly created Truecrypt container into the local synchronized directory. Measure the <em>time it takes to perform the initial upload</em>. For services storing to the Internet, I've used a container of 50 MB, which should take about 17 minutes to upload on my home DSL line. For services storing on another computer in the LAN, I've used a container of 4700 MB, which would take a little over an hour to upload on my 2005 WLAN.</li>
+<li>Mount the container and create a small text file with just a few characters in the root directory. This should be about the <em>smallest change one can do to a container</em>.</li>
+<li>Dismount the container. This modifies the timestamp and triggers the synchronization software to <em>upload the change</em>. Measure the time it takes to finish synchronization.</li>
+</ol>
+<h2>Test Results</h2>
+<h3>Efficiency for Small Changes to a Large File</h3>
+<p>For Truecrypt users, this is the first and main criterion. Slightly surprising, only these four services showed to transfer less than the full size of the container, after a small change had been made to it (beginning with the best):</p>
+<ul>
+<li>Dropbox - less than 1 minute for indexing and uploading of 50 MB to the Internet</li>
+<li>Wuala - 2-3 minutes for 50 MB to the Internet</li>
+<li>BitTorrent Sync - 8 minutes for 4700 MB to a LAN partner</li>
+<li>CrashPlan - ca. 20 minutes for 4700 MB to a LAN partner (a full upload would have taken four times as long)</li>
+</ul>
+<p>All others did a full re-upload of the full container, even when only a few kB had changed.</p>
+<h3>Ease of Use</h3>
+<p>A backup not done regularly is useless, so it should be easy to use.</p>
+<p>Most services are on the same level: modify the contents of the synchronized directory, and it will automatically be mirrored to the cloud/backup site, as long as there is reasonably good Internet connectivity. But for some services there are things to keep in mind:</p>
+<ul>
+<li>BitTorrent Sync: at least one peer needs to be running for synchronization to take place.</li>
+<li>OwnCloud: the server needs to run for synchronisation to take place; a low powered client (e.g. netbook) suffers significant continuous load (about 30 % CPU [dual core Atom] and disk) by the synchronization software.</li>
+<li>CrashPlan: the backup target peer needs to be running during the time of a scheduled backup. Backup is not continuous, instead it takes place at scheduled times, although you can manually trigger a backup run. On Windows, after a few reboots, the UI could no longer contact the server. I've deinstalled CrashPlan after the test because of this.</li>
+<li>(Deutsche) Telekom Media Center: large files were suffering from repeated upload errors. One hour was not enough to upload a single 50 MB file. I've stopped considering this Media Center as an option.</li>
+<li>Wuala: during active use of a file, there are occasional conflicts between the client software (e.g. TaskCoach) and Wuala.</li>
+</ul>
+<h3>Ease of Setup</h3>
+<p>Setup is an important part of use, because if you can't get it running in the first place, it's useless.</p>
+<p>Most services require the user to sign up, download the software, install it, enter username and password (many apps can do the signup within the app, not requiring a web visit) and specify the folder to be shared.</p>
+<p>The locally running products of course differ from this baseline:</p>
+<ul>
+<li>BitTorrent Sync: no sign up required. You need to install the program on (at least) two machines (backup target) and create a shared folder on each of them, identified by a secret (32 character random string). There is a nice setup feature for mobiles (currently Android 2.2+ and iOS): the secret is optionally displayed as a QR code that can be photographed instead of typed. Setting up BitTorrent Sync on a Linux machine is too hard for the average home or office user, but well within range of an IT person.</li>
+<li>CrashPlan: You need to install the programm on a second machine (backup target) and register with the same username/password. There are options to back up to a friend, possibly in another city, with different username; I did not explore these options. Setting up CrashPlan on a Linux machine is too hard for the average home or office user. After a few reboots on my Windows 7 netbook, the UI it couldn't connect to the backup engine. Thus I've stopped considering CrashPlan as an option.</li>
+<li>OwnCloud: you need to set up your own web server. That's o.k. if you are familiar with Linux and setting up a MySQL database is a little quick thing to you. That's not o.k. if you'd have to call in a costly IT specialist to do it for you. In that case, better turn to commercial hosting offers.</li>
+</ul>
+<p><em>Sharing with others</em> tends to be a lot harder to set up. Products vary widely here. A few examples:</p>
+<ul>
+<li>BitTorrent Sync: as easy as it can be. Select a local folder to contain the shared data, enter the secret of the share (someone already participating in it should tell it to you) and everything else is cared for by BitTorrent's trackers and relays, no matter whether it's across the desk or across the world.</li>
+<li>OwnCloud: configure permissions in the web UI. Joining the share with a client is tricky, because you have to know the precise pathname, which to the owner is different than to the others (/my-area vs. /Shared/my-area).</li>
+<li>Wuala: somewhat hard to understand, but doable.</li>
+<li>TeamDrive: very hard, beyond the capability of the average user. That's part of the cost of security. The manufacturer knows it, so recent versions (starting from 3.0) have become easier, but possibly at the cost of security (Teamdrive could possible copy the some key from the invite-mail and thus no longer guarantee "we absolutely can't read our user's data". Version 3.x is not yet officially certified as fulfilling the requirements of German data privacy law.).</li>
+</ul>
+<h2>Security</h2>
+<p>You are considering Truecrypt, because you care for privacy. This is not a luxury, but a requirement of German data privacy (protection) law. Penetration testing etc. is far beyond my capability, but I did evaluate, what the manufacturer and others say about the security of their product.</p>
+<p>The baseline is not overwhelming:</p>
+<ul>
+<li>Communication is encrypted, mostly using SSL, but</li>
+<li>all data is being stored on servers outside your physical and administrative control.</li>
+<li>Storage is either without any encryption (Ubuntu One) or encrypted by a key that's available to the provider. So there is nothing to stop the provider from reading your data. Many see this as a breach of German data privacy law.</li>
+</ul>
+<p>So your options are:</p>
+<ul>
+<li><em>Run the service under your control</em> (BitTorrent Sync, CrashPlan non-cloud, OwnCloud). This takes some effort (very little with BitTorrent Sync, tolerable with CrashPlan, considerable with OwnCloud) to set up. The reward is unlimited disk space and safe ground law-wise, because there is no external provider who could snoop on your data.</li>
+<li><em>Chose a service that does "zero-knowledge" client-side encryption</em> (Wuala, Teamdrive, CrashPlan cloud). Because the clients are closed source, you have to rely on their word that they really can't read your data.</li>
+<li><em>Use a Truecrypt container</em> and chose a service that does handle it efficiently (Dropbox, Wuala, BitTorrent Sync, Crashplan). But mounting and dismounting the container is a lot of hassle - more than many people are willing to tolerate in their daily work.</li>
+</ul>
+<h2>Conclusion</h2>
+<p>It's the usual "it depends".</p>
+<ul>
+<li>BitTorrent Sync is definitely worth a closer look, especially if collaboration is part of your equation, if you have multiple machines in your home/office that are regularly powered on. When testing it for this report, it was the first product I've ever felt capable enough to replace DropBox for me, mostly because of the good Android client.</li>
+<li>CrashPlan is the tool of choice, if you're after versioned backup and have a cooperating machine (powered on regularly, well connected, lots of disk space) - and if the connectivity problems aren't biting you.</li>
+<li>Wuala is the tool of choice for medium sized (&lt; 5 GB) Truecrypt containers and not overly sensitive direct file storage ("trust us" client-side security).</li>
+<li>Teamdrive is the tool of choice for somewhat sensitive direct file storage ("trust us" client-side security with certified previous version), but not for active Truecrypt containers.</li>
+<li>Dropbox is the tool of choice for small (&lt; 2 GB, unless you pay 10$/month/100GB) Truecrypt containers, as well as non-sensitive files to be distributed to the broadest variety of devices.</li>
+<li>OwnCloud can be an option, if you also have use for group calendars and the like. You'll need a server and an IT person though, to set it up.</li>
+<li>All others (Google Drive, Skydrive, Ubuntu One) are only useful for small or rarely changing large files - lots of them, but without privacy.</li>
+</ul>

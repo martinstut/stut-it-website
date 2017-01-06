@@ -1,0 +1,97 @@
+---
+layout: post
+title: Text Folding by JavaScript for Instructions
+date: 2014-12-16 12:52:31.000000000 +01:00
+type: post
+published: true
+status: publish
+categories:
+- howto
+tags:
+- code
+- folding
+- javascript
+- web
+meta:
+  _publicize_pending: '1'
+  publicize_linkedin_url: https://www.linkedin.com/updates?discuss=&scope=48843306&stype=M&topic=5950588079336079360&type=U&a=J8FM
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  publicize_twitter_user: martinstut
+  publicize_twitter_url: http://t.co/7W9PQvV9fT
+  _wpas_done_182683: '1'
+  _publicize_done_external: a:1:{s:7:"twitter";a:1:{i:16191471;b:1;}}
+  _wpas_done_182682: '1'
+  _oembed_b27a9e5f8977b4707bc587c0dcf60cc9: "{{unknown}}"
+  _oembed_d400b3a96a1bd4d05db411ca3448cb11: "{{unknown}}"
+author:
+  login: martinstut
+  email: martin.stut@gmx.de
+  display_name: Martin Stut
+  first_name: ''
+  last_name: ''
+excerpt: "When you are writing technical instructions for a non-technical audience,
+  e.g. about setting up an email client, addressing a group of entrepreneurs, you
+  are in a dilemma: The instructions should cover all the details and background information,
+  but also the instructions should be short, so people aren't overwhelmed by the size
+  and can process them within a very short span of undivided attention.\r\nIn this
+  article I'm describing, and offering for download, a small JavaScript library enabling
+  you to create foldable text by simply defining CSS classes for certain areas of
+  your text."
+---
+<p>Update 2014-12-19: I have moved all code and documentation to <a href="https://github.com/martinstut/instruction-folding" target="_blank">https://github.com/martinstut/instruction-folding</a> .</p>
+<h2>Rationale</h2>
+<h3>Text Size vs. Completeness</h3>
+<p>When you are writing <strong>technical instructions for a non-technical audience</strong>, e.g. about setting up an email client, addressing a group of entrepreneurs, you are in a <strong>dilemma</strong>:</p>
+<ol>
+<li>The instructions should cover all the details and background information.</li>
+<li>The instructions should be short, so people aren't intimidated by the size and can process them within a very short span of undivided attention.</li>
+</ol>
+<p>If you write up all the details, the text gets too long. If you just write the key items, you're omitting required details for some trouble cases.</p>
+<p>A solution to this dilemma is text folding: by default, display only the key items, but offer the reader a link or button "show details" which, when clicked, reveals additional information.</p>
+<h3>Alternatives within Instructions</h3>
+<p>Many instruction pages are offered to an audience having somewhat different environments, for instance</p>
+<ul>
+<li>Setting up an email account is a fairly generic concept, but the clicks required do differ from Thunderbird to Outlook.</li>
+<li>Products and web services are sold with varying components, but referred to by identical electronic manuals (web pages). Who hasn't read manuals like "On Windows Vista and 7, go to Start / All Programs / Vendor Name / Product Name. On Windows 8, unless you are using Classic Shell, switch to the tile menu, click on 'All Programs', locate the 'Vendor Name' group, ..."</li>
+</ul>
+<p>Accomodating for all existing alternatives increases the size of the document (often doubling it), causes complex grammar and confuses readers about whether they should do A or B, just because they have a hard time (or no time, in case of fast reading) to decode whether "if this, but not that, except when having chosen option N" does or does not apply to them.</p>
+<p>A solution is again text folding: offer a set of links or buttons corresponding to options, like "click this if you have Windows 7, click that if you have Windows 8." Of course the currently active option needs to be highlighted to indicate the fact that it is active.</p>
+<h2>Implementation Goals</h2>
+<p>In current web technology we have standardized JavaScript logic and DOM (Document Object Model) structure to selectively show or hide portions of text in web pages. But somehow the browser needs to know what to show and what to hide, so there needs to be some markup.</p>
+<p>Nowadays many web authors need to edit HTML inside Content Management Systems, so the markup needs to be compatible with a restricted subset of HTML. Adding some SPANs or DIVs might be the most one can do.</p>
+<p>A possible solution to this are class names. Every HTML node can be member of zero or more classes, using code like<br />
+<code>&lt;ol class="class1 class2 class3"&gt;...&lt;/ol&gt;</code><br />
+This is what I've implemented. You can look at an example on <a href="http://martinstut.github.io/instruction-folding/testtext.html" target="_blank">http://martinstut.github.io/instruction-folding/testtext.html</a> .</p>
+<h2>Using the code</h2>
+<p>Here is what you need to do to use this code:</p>
+<h3>Download and Unpack</h3>
+<ol>
+<li>Get the code, especially instruction-folding.js, from <a href="https://github.com/martinstut/instruction-folding" target="_blank">https://github.com/martinstut/instruction-folding</a> .</li>
+<li>Read, and try to understand, the source code of testtext.html and optionally styles.css .</li>
+<li>Copy instruction-folding.js to a convenient place on your web server.</li>
+</ol>
+<h4>Add the JavaScript Code</h4>
+<p>Insert this line anywhere in the HTML file, preferably in the head section or at the end of the body section:</p>
+<pre></pre>
+<h3>Define Conditional Sections</h3>
+<p>The JavaScript code implements a variable-value model to specify which sections should be shown or not. A section is shown if</p>
+<ul>
+<li>either there is no condition specified (standard case for text that is shown always)</li>
+<li>or the current value of the given variable matches one of the values specified by the HTML node's classes.</li>
+</ul>
+<p>If you want to show a section only if variable var has value val, then assign it the class if-var-val .</p>
+<p>If you want to show a section if variable var has either value val1 or value val2, then assign it to multiple classes if-var-val1 if-var-val2 . You can also use more than two classes.</p>
+<p>Variable names and values must not contain dashes, if-windows-version-windows-8 is doubly non-functional (variable name contains a dash, value contains a dash). Any character permissible in a class name is acceptable, but for clarity, you should restrict yourself to lower case letters and digits.</p>
+<h4>Example</h4>
+<p class="if-windowsversion-vista if-windowsversion-7">This text will be displayed for Windows Vista or Windows 7, but will be hidden for Windows 8.</p>
+<h3>Define Setting Links</h3>
+<p>To set variable var to value val, the user needs to click on an HTML node having the set-var-val class. This will add onclick code to this HTML node.<br />
+After clicking on a setter node, the clicked node will additionally be assigned to the setter-active class. This can be used as a CSS selector to highlight the currently active value.</p>
+<p>It you want a certain setter to contain the default value that's effective before any setter is clicked, assign it to the class var-default . This will act as if this setter is being clicked right after the page is loaded.</p>
+<h4>Example</h4>
+<p>Select your computer's operating system: <strong class="setter set-windowsversion-vista">Windows Vista</strong> <strong class="setter set-windowsversion-7 var-default">Windows 7</strong> <strong class="setter set-windowsversion-8">Windows 8</strong></p>
+<p>This offers a choice of Windows Vista, 7 and 8, with Windows 7 being the default.</p>
+<p>The setter class has no influence on the hiding logic, but is useful as a CSS selector to highlight areas that can be clicked on. It could have any other name.</p>
+<h2>Future Work</h2>
+<p>IMO the "show/hide explanation" use case requires too much HTML code. It should be easier than now for the author to write such cases.</p>

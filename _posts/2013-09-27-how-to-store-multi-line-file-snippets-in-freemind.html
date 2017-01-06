@@ -1,0 +1,52 @@
+---
+layout: post
+title: How to store multi-line file snippets in FreeMind
+date: 2013-09-27 12:14:45.000000000 +02:00
+type: post
+published: true
+status: publish
+categories:
+- general
+tags:
+- documentation
+- freemind
+- html
+- mindmap
+meta:
+  _edit_last: '8168498'
+  _publicize_pending: '1'
+  _wpas_done_182682: '1'
+  publicize_twitter_user: martinstut
+  _wpas_done_182683: '1'
+  _publicize_done_external: a:1:{s:7:"twitter";a:1:{i:16191471;b:1;}}
+  _wpas_skip_182683: '1'
+  _wpas_skip_182682: '1'
+author:
+  login: martinstut
+  email: martin.stut@gmx.de
+  display_name: Martin Stut
+  first_name: ''
+  last_name: ''
+---
+<p>Every now and then, I need to document computer code, such as a configuration defined by text files, including snippets of code (2 - 30 lines) in the documentation. I do like using <a title="project home page" href="http://freemind.sourceforge.net" target="_blank">FreeMind</a> as a fast editing tool to collect information and thoughts. But usually, nodes in mind maps are just keywords or text snippets with little formatting. So I was looking for a way to include multi-line code snippets in mind map nodes that require preserving line breaks and whitespace.</p>
+<p>It turned out to be easier than I thought:</p>
+<ol>
+<li>Open the node, about to contain the file snippet, with the long text editor (Alt+enter).</li>
+<li>When asked whether you want to use formatting (bold, italic, etc.), click "yes". The editing window will open.</li>
+<li>Near the bottom of the editing windows, click on the HTML-code-view tab. You'll see plain HTML code.</li>
+<li>Move the cursor to the place where you want to insert the configuration file snippet.</li>
+<li>Enter this code:
+<pre>&lt;pre&gt;&lt;/pre&gt;</pre>
+</li>
+<li>Move the cursor between &lt;pre&gt; and &lt;/pre&gt;</li>
+<li>Copy the code you want to insert from the source.</li>
+<li>Paste it between &lt;pre&gt; and &lt;/pre&gt; .</li>
+<li>Switch back to layout view and continue editing/saving etc.</li>
+</ol>
+<p>Of course you can adopt this to your style of work:</p>
+<ul>
+<li>Instead of pasting into the HTML code, you can leave some indicator text, switch to layout view and paste the code into layout view.</li>
+<li>You can create a template node using this method and then copy it to other places of use.</li>
+<li>Instead of &lt;pre&gt;, you can try &lt;code&gt;, but I found that &lt;pre&gt; works better.</li>
+</ul>
+<p>I'm pleased with the versatility offered by FreeMind.</p>

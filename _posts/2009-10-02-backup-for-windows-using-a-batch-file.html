@@ -1,0 +1,38 @@
+---
+layout: post
+title: Backup for Windows using a batch file
+date: 2009-10-02 21:23:00.000000000 +02:00
+type: post
+published: true
+status: publish
+categories:
+- howto
+tags:
+- backup
+- date
+- windows
+- xcopy
+meta:
+  blogger_blog: stut-tech.blogspot.com
+  blogger_author: Martin Stut
+  blogger_696be068bb61f647b27027922882b6af_permalink: '6564576888374197931'
+  switch_like_status: '1'
+  _edit_last: '8168498'
+  _wpas_skip_twitter: '1'
+  _oembed_8d2dcd9b5ecdb293eb7f964a49d1bd24: "{{unknown}}"
+  _oembed_997984d76587dd8c059deb2e29bbef64: "{{unknown}}"
+author:
+  login: martinstut
+  email: martin.stut@gmx.de
+  display_name: Martin Stut
+  first_name: ''
+  last_name: ''
+---
+<p>This batch file does a reliable backup of Windows Vista Users to an external hard drive. There will be a new directory for each day the script is run. For Windows language settings other than German, you will need to adapt the SET FULLDATE line. FULLDATE should be something like 2009_10_31.</p>
+<p><span style="font-family:courier new;">SET TARGETPATH=F:\Sicherung</span><br />
+<span style="font-family:courier new;">SET FULLDATE=%date:~6,4%_%date:~3,2%_%date:~0,2%</span><br />
+<span style="font-family:courier new;">echo FULLDATE=%FULLDATE%</span><br />
+<span style="font-family:courier new;">SET TARGET=%TARGETPATH%\%FULLDATE%</span><br />
+<span style="font-family:courier new;">mkdir %TARGET%</span><br />
+<span style="font-family:courier new;">rem robocopy C:\Users %TARGET% /S /V /R:0 /W:0 /PURGE </span><br />
+<span style="font-family:courier new;">xcopy C:\Users %TARGET% /S /C /I /R /Y</span></p>

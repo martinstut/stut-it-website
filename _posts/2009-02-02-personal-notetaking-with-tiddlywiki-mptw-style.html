@@ -1,0 +1,40 @@
+---
+layout: post
+title: Personal Notetaking with TiddlyWiki, MPTW Style
+date: 2009-02-02 19:42:00.000000000 +01:00
+type: post
+published: true
+status: publish
+categories:
+- organization
+tags:
+- documentation
+- mptw
+- tiddlywiki
+- todo
+- wiki
+meta:
+  blogger_blog: stut-tech.blogspot.com
+  blogger_author: Martin Stut
+  blogger_696be068bb61f647b27027922882b6af_permalink: '6441665733770713753'
+  _edit_last: '8168498'
+  _wpas_skip_twitter: '1'
+author:
+  login: martinstut
+  email: martin.stut@gmx.de
+  display_name: Martin Stut
+  first_name: ''
+  last_name: ''
+---
+<p>I developed the habit of trying to document everything I do. So I need a piece of software to quickly take notes and put them into relationships later. A wiki is likely to fill that need. While testing various server based wikis for my job (the largest branch is looking for a centralized documentation system), I discovered an implementation I'd call an eye-opener: <a href="http://www.tiddlywiki.com">TiddlyWiki</a>. The entire wiki is stored as a single, large (250 kB) HTML file. All the logic is implemented in JavaScript. I hadn't thought before that such an application could be feasible in JavaScript - that's why I call it an eye-opener.<br />
+Having all data in a single file and letting the browser run the logic makes it not well suited for group access, but ideal for personal use on a USB key. No installation required, just a decent web browser - optimized for Firefox, also working on IE. If you want to publish information contained in a TiddlyWiki, or just want a web hosting service for your private data, you can create a free account at tiddlyspot.com. I didn't try that, but many others have.</p>
+<p>TiddlyWiki can be extended by plugins and these can be updated through the TiddlyWiki synchronization feature. Several people have created such extensions, so there are many variants of TiddlyWiki around. All of them share the same core code.</p>
+<p>After adding a few pages, I found it cumbersome to create the internal links. This is the reason, why I don't consider server based wiki an option for quick documentation writing (though wikis are great for documentation <span style="font-style:italic;">publishing </span>and collaboration). Then I stumbled across a TiddlyWiki variant called MPTW. It contains a few function buttons which make life a lot easier for documentation:</p>
+<ul>
+<li>On the top of each page (called "Tiddler" in TiddlyWiki parlance), all tags of this page are listed, together with a drop down menu, listing <span style="font-style:italic;">all other pages having this tag</span>.</li>
+<li>On the bottom of each page, there is a customizable list of all pages having the <span style="font-style:italic;">title of current page as a tag</span>. So I can create a page "VMware" containing an automatic listing of all other pages tagged with VMware.</li>
+<li>On every page there is a "New here" button that creates a new page, automatically tagged with the title of the previous page. So the newly created page will automatically be listed at the bottom of the parent page. This way you can <span style="font-style:italic;">create a logical tree of pages without any extra tagging or linking effort</span>.</li>
+<li>The customizable list of all child pages has an option ("site map") to display not only the direct children, but also the children of children and further generations. This mode really got me hooked.</li>
+<li>The customizable list of all child pages has an option to include an excerpt (one line or so) of each child page, so you see even more what's up in your documentation forest.</li>
+</ul>
+<p>Try it and you'll love it.</p>

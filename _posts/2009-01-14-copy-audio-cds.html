@@ -1,0 +1,59 @@
+---
+layout: post
+title: Copy Audio CDs
+date: 2009-01-14 20:51:00.000000000 +01:00
+type: post
+published: true
+status: publish
+categories:
+- howto
+tags:
+- audio
+- backup
+- break
+- burn
+- cd
+- tracks
+meta:
+  blogger_blog: stut-tech.blogspot.com
+  blogger_author: Martin Stut
+  blogger_696be068bb61f647b27027922882b6af_permalink: '1064215087336461038'
+  _edit_last: '8168498'
+  _wpas_skip_twitter: '1'
+author:
+  login: martinstut
+  email: martin.stut@gmx.de
+  display_name: Martin Stut
+  first_name: ''
+  last_name: ''
+---
+<p>In the church I'm attending (<a href="http://www.marburg-sued.de/">Evangelische Gemeinschaft Marburg-Süd</a>) we just started recording the sermon on CD in addition to cassette tape. These CDs are likely to be popular, so we'll need a method of duplicating them easily and quickly. I wanted to determine, how to do that on my PC (Debian Linux Testing, currently 5.0 "Lenny").</p>
+<p>This may sound trivial to some people, but I had some special requirements:</p>
+<ul>
+<li>Command line only, so I can create a script to fully automate the process.</li>
+<li>There must not be any audible pause between tracks. Recording is done on an appliance type CD-recorder. Track marks are created by pushing the "record" button while a recording is under way. This is done live during the sermon and thus, more often than not, in the middle of a sentence - just after me noticing that a new logical section has begun.</li>
+<li>We need multiple copies of a single master. Ripping the master CD-RW to computer files is permitted to take a while, but burning the copies afterwards should be fast.</li>
+</ul>
+<p>I was surprised, how straightforward the solution is:</p>
+<p><span style="font-weight:bold;">Ripping the Master CD-RW to files</span></p>
+<ol>
+<li>Create the desired target directory and <span style="font-family:courier new;">cd</span> to it. It should be blank to accept files with a very generic name without conflict. I chose something like <span style="font-family:courier new;">/backup/mr-sued/2009-01-11</span></li>
+<li>Insert the master CD-RW into any suitable drive. I have a DVD-ROM and a CD-RW drive. I inserted the master CD into the DVD-ROM.</li>
+<li>execute <span style="font-family:courier new;">cdparanoia -B</span><br />
+No other parameters required.</li>
+</ol>
+<p>The audio tracks of the CD end up in the current directory with names <span style="font-family:courier new;">track01.cdda.wav</span>, <span style="font-family:courier new;">track02.cdda.wav</span> etc.</p>
+<p>That's it.</p>
+<p><span style="font-weight:bold;">Burning the Copies</span></p>
+<p>Because burning CDs requires enhanced privileges (write access to a device, assigning processes high priority to avoid buffer underruns), I did these steps as root. Burning as an ordinary user may or may not work, depending on your distribution and setup.</p>
+<p>You need to know the Linux device name. I assigned /dev/cdrw to my CD-RW drive, so I knew I could use that. If you know less about your hardware, you can execute <span style="font-family:courier new;">wodim -scanbus</span>(some distributions might have cdrecord instead of wodim). This shows you a list of devices. Mine was</p>
+<pre class="code">scsibus1000: 1000,0,0 100000) * 1000,1,0 100001) * 1000,2,0 100002) 'HL-DT-ST' 'DVD-ROM GDR8160B' '0013' Removable CD-ROM 1000,3,0 100003) 'AOPEN   ' 'CD-RW CRW3248   ' '1.10' Removable CD-ROM 1000,4,0 100004) * 1000,5,0 100005) * 1000,6,0 100006) * 1000,7,0 100007) *</pre>
+<p>The burning itself was easy, after an extended read of <span style="font-family:courier new;">man wodim</span>:</p>
+<p><span style="font-family:courier new;">wodim dev=/dev/cdrw -dao -audio -copy -eject *.wav </span></p>
+<p>Of course you should insert a blank CD-R (or a blanked CD-RW) before and you should be in the directory of the audio wav files.<br />
+If you are doing this for the first time on your computer, everybody recommends a test-run with an additional option <span style="font-family:courier new;">-dummy</span>.</p>
+<p>The option <span style="font-family:courier new;">-dao</span> sets wodim in disk-at-once mode, as opposed to track-at-once. Disk-at-once ensures that there are no audible gaps between the tracks.<br />
+<span style="font-family:courier new;">-audio</span> makes sure you'll write audio tracks as opposed to data tracks. CD players can only play audio tracks.<br />
+<span style="font-family:courier new;">-copy</span> sets a permission bit to make arbitrary generations of digital copies of these tracks. We want to distribute the message. Your organizational situation may be different.<br />
+<span style="font-family:courier new;">-eject</span> is optional fun, but somewhat comfortable: eject the finished CD after it has been burnt.</p>
+<p>Happy Hacking!</p>
