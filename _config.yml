@@ -6,10 +6,13 @@ description: > # this means to ignore newlines until "baseurl:"
   line in _config.yml. It will appear in your document head meta (for
   Google search results) and in your feed.xml site description.
 baseurl: "" # the subpath of your site, e.g. /blog/
-url: "http://www.stut-it.net" # the base hostname & protocol for your site
-port: 4001
+url: "https://www.stut-it.net" # the base hostname & protocol for your site
+#port: 4001
 #twitter_username: jekyllrb
 #github_username:  jekyll
+keywords: "Martin Stut, IT, information technology, computer, Marburg, Germany" # to be included in meta keywords of all pages
+slogan: "Information Technology Tailored to You" # to be included at the top of every page
+logofile: "/images/logo-98x59px.png" # used only if this variable is active
 
 # Build settings
 markdown: kramdown

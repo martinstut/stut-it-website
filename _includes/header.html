@@ -1,10 +1,10 @@
 <div id="head">
   <div id="logoleft">
-    <img style="width: 98px; height: 59px;" alt="stut-it information technology tailored to you" src="images/logo-98x59px.png"/>
+    {% if site.logofile %} <img id="logoleft" style="width: 98px; height: 59px;" alt="{{site.title}}" src="{{site.logofile}}"/> {% endif %}
   </div>
   <div id="address">
-    <img id="logotop" style="width: 98px; height: 59px;" alt="stut-it information technology tailored to you" src="images/logo-98x59px.png"/>
-    <p>Martin Stut, Dünsbergstr. 38, 35043 Marburg, Germany, Phone +49-6421-953639</p>
+    {% if site.logofile %} <img id="logotop" style="width: 98px; height: 59px;" alt="{{site.title}}" src="{{site.logofile}}"/> {% endif %}
+    <p>{{site.title}} - {{site.slogan}}</p>
     <h1>{{ page.title }}</h1>
   </div>
   <div class="floatclearer"></div>

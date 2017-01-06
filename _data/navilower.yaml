@@ -1,0 +1,8 @@
+- url: "https://www.stut-it.de"
+  menuname: "Deutsche Version"
+
+- url: /privacy.html
+  menuname: Privacy
+  
+- url: "#head"
+  menuname: "back to top"

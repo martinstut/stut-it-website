@@ -1,11 +1,11 @@
 ---
 # Jekyll Front Matter, to make Jekyll process this file
 ---
-/* styles.scss fuer www.stut-it.net
+/* styles.scss fuer www.stut-it.de
 	mobile first version */
 /* Variablen */
 $standardfarbe: #082568;	/* ziemlich dunkles blau */
-$hintergrundfarbe: #FFAA00; 
+$hintergrundfarbe: #FFAA00; /* THIS GETS USED MOST OF THE TIME; ALL OTHER COLORS ARE ESSENTIALLY UNUSED */
 $kontrastfarbe: #1240AB;
 $standardfarbehell: #FFBD39;
 $standardfarbesehrhell: #FFCB63;
@@ -16,7 +16,7 @@ $linkhintergrundfarbe: #FFFFFF;
 $schmuckhintergrundfarbe: #5777C0;
 
 @mixin navipadding {
-	padding-top: 0.5em;
+	padding-top: 0.1em;
 	padding-bottom: 0.6em;
 	padding-left: 0.8em;
 	padding-right: 0.8em;
@@ -53,6 +53,7 @@ body {
 	margin-left:1em;
 	}
 h1 {
+	line-height: 1.1em;
 	}
 #logotop {
 	display:block;
@@ -69,18 +70,28 @@ a.active {
 ul.navi {
 	margin-top: 0em;
 	list-style-type: none;
-	padding-left: 0em;
+	padding: 0em;
 	text-align: center;  /* mobile first: Navigation in einer Reihe anzeigen */
 	li {
-		margin-top: 0.2em;
-		margin-bottom: 1.3em;
+		margin-top:0.2em;
+		margin-bottom:1.3em;
 		margin-right:0.2em;
+		padding-top:0.4em;
 		display: inline-block; /* mobile first: Navigation in einer Reihe anzeigen */
 		background-color: $linkhintergrundfarbe;
 		}
 	a {
 		@include navipadding;
 		}
+	ul.subnavi {
+		padding-left:0em;
+		padding-bottom:0.3em;
+		li {
+			font-size:85%;
+			margin:0em;
+			padding:0em;
+		}
+	}
 	}
 #inhalt {
 	background-color: $inhaltshintergrundfarbe;
@@ -179,17 +190,34 @@ table.referenzen {
 	ul.navi {
 		list-style: none;
 		text-align: left;
-		margin: 1em 0em;
+		margin-top:0.7em;
+		margin-left:0em;
 		padding: 0em;
 		li {
 			background-color: $hintergrundfarbe;
 			/* padding: 0em; */
-			margin-top: 1em;
-			margin-bottom: 1.1em;
+			margin-top: 0.5em;
+			margin-bottom: 0.5em;
 			display: block;
 			}
 		a {
 			padding:0.5em 0.5em;
+		}
+		ul.subnavi {
+			margin-top: 0.5em;
+			margin-bottom:0em;
+			padding-top: 0em;
+			padding-left: 1em;
+			padding-right: 1em;
+			li {
+				font-size: 85%;
+				margin-top: 0.5em;
+				display: block;
+			}
+			a {
+				padding-top:0.3em;
+				padding-left:0.5em;
+			}
 		}
 	}
 	#inhalt {
