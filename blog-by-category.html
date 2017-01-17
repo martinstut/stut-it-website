@@ -1,0 +1,28 @@
+---
+title: Blog
+layout: default
+---
+{% include bloglinks.html %}
+
+<h2>All Posts by Category</h2>
+(Thanks to <a href="https://blog.webjeda.com/jekyll-categories/" target="_blank">WebJeda</a> for the code snippet.)
+<div id="archives">
+{% for category in site.categories %}
+  <div class="archive-group">
+    {% capture category_name %}{{ category | first }}{% endcapture %}
+    <div id="#{{ category_name | slugize }}"></div>
+    <p></p>
+    
+    <h3 class="category-head">{{ category_name | capitalize }}</h3>
+    <a name="{{ category_name | slugize }}"></a>
+	<ul>
+    {% for post in site.categories[category_name] %}
+      <li class="archive-item"><a href="{{ site.baseurl }}{{ post.url }}">{{post.title}}</a> ({{post.date | date: "%Y-%m-%d" }})</li>
+    {% endfor %}
+	</ul>
+  </div>
+{% endfor %}
+</div>
+
+<p><a href="/blog-all-posts.html">Complete list of all blog posts, chronologically</a></p>
+

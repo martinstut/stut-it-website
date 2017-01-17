@@ -10,9 +10,14 @@
 - url: /experience.html
   menuname: Experience
 
-- url: /blog/
+- url: /blog.html
   menuname: Blog
-  
+  subpages:
+  - url: /blog-by-category.html
+    menuname: By Category
+  - url: /blog-all-posts.html
+    menuname: All Posts
+    
 - url: /links.html
   menuname: Links
   

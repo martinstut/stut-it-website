@@ -8,6 +8,7 @@
 		{% include navi.html %}
 	</div>
     <div id="inhalt">
+	  <p>By {{page.author.display_name | default: page.author }}, {{page.date | date: "%Y-%m-%d"}}</p>
       {{ content }}
     </div>
 	<div id="lowernavi">

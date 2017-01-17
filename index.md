@@ -25,3 +25,5 @@ I am here to help.  You can utilize my broad knowledge from more than three deca
 My current part time employment provides me the opportunity to assist small businesses or households with IT improvements without it costing you the normal high cost of IT support.  I can offer solutions at a minimal cost, solutions that require little effort and are thus efficient for you.
 
 If you are looking for a German in Germany for managing events, having an address in Germany or similar tasks, I can recommend my wife’s [Büroservice Marion Stut](http://www.marion-stut.de) (German language only).
+
+{% include blog-recent.html %}

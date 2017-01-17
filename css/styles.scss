@@ -24,7 +24,7 @@ $schmuckhintergrundfarbe: #5777C0;
 /* Webfont: LatoLatin-Regular */
 @font-face {
     font-family: 'LatoLatinWeb';
-    src: url('LatoLatin-Regular.eot'); /* IE9 Compat Modes */
+    /* src: url('LatoLatin-Regular.eot'); *//* IE9 Compat Modes */
     src: url('LatoLatin-Regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
          url('LatoLatin-Regular.woff2') format('woff2'), /* Modern Browsers */
          url('LatoLatin-Regular.woff') format('woff'), /* Modern Browsers */
@@ -34,7 +34,7 @@ $schmuckhintergrundfarbe: #5777C0;
     text-rendering: optimizeLegibility;
 }
 body {
-	/* font-family:"LatoLatinWeb";	font-style:normal; *//* sieht in FF auf Windiws sehr verpixelt aus */
+	/* font-family:"LatoLatinWeb";	font-style:normal; */ /* sieht in FF auf Windows sehr verpixelt aus */
 	font-family: sans-serif;
 	line-height: 1.5em;
 	color: black;
@@ -99,6 +99,12 @@ ul.navi {
 	padding-right: 1em;
 	padding-top: 0.1em;
 	padding-bottom: 1em;
+	}
+#footer {
+	p {
+		font-size:small;
+		text-align:right;
+		}	
 	}
 table.referenzen {
 	text-align: left;
