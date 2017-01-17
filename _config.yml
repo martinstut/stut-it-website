@@ -20,6 +20,7 @@ gems:
 exclude:
   - Gemfile
   - Gemfile.lock
+  - README.md
 #paginate: 20
 #paginate_path: "/blog/page:num/"
 permalink: /blog/:year/:title:output_ext
