@@ -12,6 +12,6 @@ Unless mentioned otherwise, the links below point to external web sites, the con
 ## My own pages
 * [Stut-IT Deutsch](https://www.stut-it.de)
 * [Martin Stut personal](https://www.stut.de)
-* [Wordpress-Blog deutsch](https://martinstut.wordpress.com) (personal, about technology, different data privacy)
-* [Wordpress-Blog englisch](https://martinstutenglish.wordpress.com) (personal, about technology, different data privacy)
+* [Blog in English](https://www.stut-it.net/blog.html)
+* [Blog in German](https://www.stut-it.de/blog.html)
 * [Github](https://github.com/martinstut)

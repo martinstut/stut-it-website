@@ -14,9 +14,11 @@
   menuname: Blog
   subpages:
   - url: /blog-by-category.html
-    menuname: By Category
+    menuname: by Category
+  - url: /blog-by-tag.html
+    menuname: by Tag
   - url: /blog-all-posts.html
-    menuname: All Posts
+    menuname: all Posts
     
 - url: /links.html
   menuname: Links

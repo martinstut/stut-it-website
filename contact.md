@@ -1,7 +1,7 @@
 ---
 title: "Contact / Imprint"
 ---
-These are the web pages of von stut-it, Martin Stut, Dünsbergstr. 38, 35043 Marburg, Germany.
+These are the web pages of von stut-it, Martin Stut, Dünsbergstr. 38, 35043 Marburg, Germany, who is also responsible for the content.
 
 Phone: +49-6421-953639
 
